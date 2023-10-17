@@ -1,0 +1,74 @@
+<script lang="ts">
+// import { Vue, Component, Prop } from 'vue-property-decorator';
+import FieldsForm from "./type"
+import Vuelidate from 'vuelidate'
+import Vue from 'vue'
+import { validationMixin } from 'vuelidate'
+import CustomInput from "./CustomInput.vue"
+
+export default {
+    data() {
+        return {
+            variavel: "",
+
+        };
+    },
+    props: {
+        text: { default: "text", type: String },
+        action: { default: () => { }, type: Function },
+        fields: Array as () => FieldsForm.Fields[]
+    },
+    methods: {
+        onInput(e: Event, id: number) {
+            // a v-on handler receives the native DOM event
+            // as the argument.
+            if (e.target instanceof HTMLInputElement) {
+                this.fields[id].value = e.target.value;
+                console.log(this.fields[id].value);
+            }
+        },
+        runInputValidation() {
+            if (this.$refs.inputs) {
+                this.$refs.inputs.forEach(input => {
+                    input.triggerValidation();
+                });
+            }
+        },
+        inputValidation() {
+            if (this.$refs.inputs) {
+                this.$refs.inputs.forEach(input => {
+                    input.validate();
+                });
+            }
+        },
+        onSubmit(e: SubmitEvent) {
+            var doAction = true;
+            this.runInputValidation()
+            for (let i = 0; i < this.fields.length; i++) {
+                const field = this.fields[i] as FieldsForm.Fields;
+                if (field.error) {
+                    return
+                }
+            }
+            this.action();
+        },
+    },
+    components: { CustomInput }
+}
+
+</script>
+
+<template>
+    <form>
+        <div v-for="(field, index) in fields" :key="index">
+            <CustomInput @validate-input="inputValidation" :field="field" ref="inputs" />
+        </div>
+        <div class="w-full flex justify-center">
+            <!-- @:click.prevent="onSubmit($event)"  -->
+            <button @:click.prevent="onSubmit" class="m-2 py-1 px-4 bg-slate-300 rounded-full">
+                register
+            </button>
+        </div>
+
+    </form>
+</template>
