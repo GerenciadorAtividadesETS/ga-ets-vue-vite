@@ -47,6 +47,7 @@ export default {
         },
         onInput(e: Event, id: number) {
             if (e.target instanceof HTMLInputElement) {
+                this.field?.type == 'number'?e.target.value = e.target.value.replace(/[^0-9]/g, ""):null
                 this.field.value = e.target.value;
                 this.validate()
                 console.log(this.field.value);
@@ -58,13 +59,11 @@ export default {
 </script>
 
 <template>
-    <div class="flex flex-col">
-        !-- VERIFICAR O SEGUINTE WARNING
-        QUE DA APOS CADA APERTADA DO BOTAO -->
+    <div class="flex flex-col w-full">
         <!-- // [Vue warn]: Component emitted event "validate-input" but it is neither declared in the emits option nor as an "onValidate-input" prop. -->
         {{ field?.name }}
         <input :required="field?.required" :type="field?.type" :placeholder="field?.placeholder ?? field?.name"
-            class="border p-2 h-8 rounded-md" @input="this.onInput($event)">
+            class="border w-full p-2 h-8 rounded-md" @input="this.onInput($event)">
         <!-- v-model == @input="onInput($event, index)" -->
     </div>
     <div v-if="field?.error != ''" class="text-sm text-red-600">{{ field?.error ? "*" + field?.error : "" }}</div>

@@ -1,5 +1,5 @@
 <script>
-import SubjectCard from "../components/SubjectCard.vue"
+import SubjectCard from '../components/SubjectCard.vue';
 
 export default {
     data() {
@@ -14,7 +14,7 @@ export default {
 
 </script>
 <template>
-    <div class="mt-10 content-end flex flex-col justify-center px-14">
+    <div class="mt-10 content-end flex flex-col justify-center w-full px-14">
         <div
             class="sm:min-h-[6rem] p-2 gap-2 items-center justify-center flex-row drop-shadow-md min-w-[272px] flex w-full mb-0 bg-white">
             <!-- <div class="flex h-fit flex-row w-full items-center justify-between"> -->
@@ -32,8 +32,6 @@ export default {
                         <SubjectCard />
                     </div>
                 </div>
-
-
         </div>
     </div>
 </template>

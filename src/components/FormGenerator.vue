@@ -13,6 +13,8 @@ export default {
 
         };
     },
+    emits: ['validate-input']
+    ,
     props: {
         text: { default: "text", type: String },
         action: { default: () => { }, type: Function },
@@ -29,9 +31,10 @@ export default {
         },
         runInputValidation() {
             if (this.$refs.inputs) {
-                this.$refs.inputs.forEach(input => {
-                    input.triggerValidation();
-                });
+                this.$refs.inputs[0].triggerValidation()
+                // this.$refs.inputs.forEach(input => {
+                //     input.triggerValidation();
+                // });
             }
         },
         inputValidation() {
@@ -59,8 +62,8 @@ export default {
 </script>
 
 <template>
-    <form>
-        <div v-for="(field, index) in fields" :key="index">
+    <form class="w-full">
+        <div class="w-full" v-for="(field, index) in fields" :key="index">
             <CustomInput @validate-input="inputValidation" :field="field" ref="inputs" />
         </div>
         <div class="w-full flex justify-center">
