@@ -10,7 +10,6 @@ export default {
     data() {
         return {
             variavel: "",
-
         };
     },
     emits: ['validate-input']
@@ -18,7 +17,9 @@ export default {
     props: {
         text: { default: "text", type: String },
         action: { default: () => { }, type: Function },
-        fields: Array as () => FieldsForm.Fields[]
+        fields: Array as () => FieldsForm.Fields[],
+        buttonName: { default : "submit", type: String},
+        buttonClass: {default: "m-2 py-1 px-4 bg-slate-300 rounded-full", type: String}
     },
     methods: {
         onInput(e: Event, id: number) {
@@ -68,8 +69,8 @@ export default {
         </div>
         <div class="w-full flex justify-center">
             <!-- @:click.prevent="onSubmit($event)"  -->
-            <button @:click.prevent="onSubmit" class="m-2 py-1 px-4 bg-slate-300 rounded-full">
-                register
+            <button @:click.prevent="onSubmit" :class="buttonClass">
+                {{buttonName}}
             </button>
         </div>
 

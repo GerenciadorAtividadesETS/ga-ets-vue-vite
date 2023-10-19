@@ -3,10 +3,11 @@ import { Fields } from './type';
 export default {
     data() {
         return {
+            
         }
     },
     props: {
-        field: Object as () => Fields
+        field: Object as () => Fields,
     },
     emits: ['validateInput'],
     methods: {

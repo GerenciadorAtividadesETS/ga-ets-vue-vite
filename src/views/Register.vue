@@ -11,6 +11,8 @@ export default {
     data() {
         return {
             color: "00ffff",
+            buttonName:"register",
+            buttonClass:"m-2 py-1 px-4 bg-slate-300 rounded-full",
             fields: [
                 {
                     name: "Nome",
@@ -55,6 +57,17 @@ export default {
         }
     },
     methods: {
+        OnFocus(e) {
+            if (e.type == 'mousedown') {
+                this.isChangingColor = true
+            }
+            console.log(e.type);
+
+            // console.log(visible);
+
+            // this.isChangingColor = visible
+
+        },
         getFieldValueByName(name: string) {
             for (let index = 0; index < this.fields.length; index++) {
                 const element = this.fields[index];
@@ -65,10 +78,10 @@ export default {
         },
         isSamePassword() {
             console.log("--");
-            
+
             console.log(this.getFieldValueByName("Confirmar Senha"));
             console.log(this.getFieldValueByName("Senha"));
-                        
+
             if (this.getFieldValueByName("Senha") != this.getFieldValueByName("Confirmar Senha")) {
                 return "Senhas não sao iguais"
             }
@@ -93,17 +106,64 @@ export default {
 
 <template>
     <div class="w-2/4 mb-10 min-w-[280px] flex items-center content-center justify-center">
-        <div class="bg-red-100 w-full h-fit flex flex-col items-center rounded-3xl">
+        <div class="bg-[#ffffff] pb-2 w-full h-fit flex flex-col items-center rounded-3xl">
             <div class="text-xl p-2">
                 Registrar
             </div>
-            Select a color
-            <ColorPicker v-model="color" class="mb-3 " inputId="cp-hex" format="hex"/>
             <div class="w-2/4 min-w-[260px]">
-                <FormGenerator :action="apiCallTest" :fields="fields" />
+                Select a profile color
+                <div class="border flex items-center w-full bg-white rounded-lg p-1">
+                        <ColorPicker v-model="color" :onchange="OnFocus" inputId="cp-hex" format="hex" :pt="{
+                                root: ({ props }) => ({
+                                    class: [
+                                        'inline-block',
+                                        {
+                                            'opacity-60 select-none pointer-events-none cursor-default': props.disabled
+                                        }
+                                    ]
+                                }),
+                                input: {
+                                    class: [
+                                        'm-2',
+                                        'font-sans text-base text-gray-600 bg-white dark:bg-gray-900 p-3 border border-gray-300 dark:border-blue-900/40 transition-colors duration-200 rounded-lg cursor-pointer',
+                                        'hover:border-blue-500 focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)] dark:focus:shadow-[0_0_0_0.2rem_rgba(147,197,253,0.5)]',
+                                        'w-8 h-8 '
+                                    ]
+                                },
+                                panel: ({ props }) => ({
+                                    class: [
+                                        'shadow-md',
+                                        'bg-gray-800 border-gray-900 mt-1',
+                                        {
+                                            'relative h-48 w-52': props.inline,
+                                            'absolute h-48 w-52': !props.inline
+                                        }
+                                    ]
+                                }),
+                                selector: 'absolute h-44 w-40 top-2 left-2',
+                                color: {
+                                    class: 'h-44 w-40',
+                                    style: 'background: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0) 100%), linear-gradient(to right, #fff 0%, rgb(255 255 255 / 0) 100%)'
+                                },
+                                colorhandle: {
+                                    class: ['rounded-full border border-solid cursor-pointer h-3 w-3 absolute  opacity-85', 'border-white']
+                                },
+                                hue: {
+                                    class: ['h-44 w-6 absolute top-2 left-44 opacity-85'],
+                                    style: 'background: linear-gradient(0deg, red 0, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, red)'
+                                },
+                                huehandle: 'border-solid border-2 cursor-pointer h-2 w-8 left-0 -ml-1 -mt-1 opacity-85 absolute',
+                                // transition: TRANSITIONS.overlay
+                            }" />#{{ color }}
+                </div>
+                <FormGenerator :buttonName="buttonName" :buttonClass="buttonClass" :action="apiCallTest" :fields="fields" />
             </div>
             <!-- {{ getFieldValueByName("EDV") }} -->
+            <h1 class="text-sm flex">
+                Já tenho uma conta 
+                <router-link class="ml-1 text-green-600" to="/login">Entrar</router-link>
+
+            </h1>
         </div>
     </div>
-    
 </template>

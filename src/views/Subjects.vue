@@ -4,7 +4,7 @@ import SubjectCard from '../components/SubjectCard.vue';
 export default {
     data() {
         return {
-            list: [0, 1]
+            list: [0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,]
         }
     },
     components: {

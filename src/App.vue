@@ -15,7 +15,7 @@ export default {
   <div class="h-fit min-h-screen overflow-x-hidden flex flex-col  bg-slate-300">
 
     <TheHeader></TheHeader>
-    <div class="flex justify-center flex-1 ">
+    <div class="flex justify-center flex-1">
       <router-view></router-view>
     </div>
     <!-- <HelloWorld msg="Vite + Vue" /> -->
