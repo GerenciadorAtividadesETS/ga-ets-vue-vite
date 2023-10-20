@@ -9,4 +9,13 @@ export type Fields = {
     error?: string,
     specificValidator?: ReturningString;
 }
+
+export type Subjects = {
+    id: number,
+    name: string ,
+    professor: string ,
+    color: string,
+    border:  string,
+}
 type ReturningString = () => String | undefined;
+

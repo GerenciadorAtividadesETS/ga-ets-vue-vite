@@ -1,10 +1,33 @@
-<script>
+<script lang="ts">
 import SubjectCard from '../components/SubjectCard.vue';
-
+import { Subjects } from '../components/type';
 export default {
     data() {
         return {
-            list: [0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,0, 1,]
+            subjects: [
+                {
+                    id: 0,
+                    name: "nome da materia",
+                    professor: "Livia",
+                    color: "000",
+                    border: "000"
+                },
+                {
+                    id: 1,
+                    name: "UM NOME BEM GRANDE PRA UMA MATERIA BEM CHATA",
+                    professor: "LIVIA PALLIARI PADOVINE",
+                    color: "000",
+                    border: "000"
+                },
+                {
+                    id: 2,
+                    name: "um nome nem tão pequeno apenas para exemplificar",
+                    professor: "GUSTAVO M R MEIRA",
+                    color: "000",
+                    border: "000"
+                },
+            ] as Subjects[],
+            list: [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,]
         }
     },
     components: {
@@ -27,11 +50,11 @@ export default {
             <!-- </div> -->
         </div>
         <div class="h-full flex-wrap justify-evenly min-w-[272px] flex w-full mb-0 bg-white">
-                <div v-for="x in list">
-                    <div :key=x class="p-4">
-                        <SubjectCard />
-                    </div>
+            <div v-for="subject in subjects">
+                <div :key=subject.id class="p-4">
+                        <SubjectCard :subject="subject" />
                 </div>
+            </div>
         </div>
     </div>
 </template>
