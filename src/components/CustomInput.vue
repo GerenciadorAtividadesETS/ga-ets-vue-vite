@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Fields } from './type';
+import { Field } from './type';
 export default {
     data() {
         return {
@@ -7,11 +7,11 @@ export default {
         }
     },
     props: {
-        field: Object as () => Fields,
+        field: Object as () => Field,
     },
     emits: ['validateInput'],
     methods: {
-        validators(field: Fields) {
+        validators(field: Field) {
             if (field?.required && field.value.toString() == "") {
                 return field.name + " is required";
             }
@@ -39,7 +39,7 @@ export default {
             return undefined
         },
         validate() {
-            const field = this.field as Fields;
+            const field = this.field as Field;
 
             field.error = this.validators(field);
         },

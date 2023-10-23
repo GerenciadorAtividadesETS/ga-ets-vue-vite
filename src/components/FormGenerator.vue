@@ -17,7 +17,7 @@ export default {
     props: {
         text: { default: "text", type: String },
         action: { default: () => { }, type: Function },
-        fields: Array as () => FieldsForm.Fields[],
+        fields: Array as () => FieldsForm.Field[],
         buttonName: { default : "submit", type: String},
         buttonClass: {default: "m-2 py-1 px-4 bg-slate-300 rounded-full", type: String}
     },
@@ -49,7 +49,7 @@ export default {
             var doAction = true;
             this.runInputValidation()
             for (let i = 0; i < this.fields.length; i++) {
-                const field = this.fields[i] as FieldsForm.Fields;
+                const field = this.fields[i] as FieldsForm.Field;
                 if (field.error) {
                     return
                 }

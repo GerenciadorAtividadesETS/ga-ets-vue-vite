@@ -1,4 +1,4 @@
-export type Fields = {
+export type Field = {
     name: string
     value: string,
     placeholder?: string,
@@ -10,12 +10,30 @@ export type Fields = {
     specificValidator?: ReturningString;
 }
 
-export type Subjects = {
+export type Subject = {
     id: number,
     name: string ,
-    professor: string ,
     color: string,
     border:  string,
 }
+
+export type Activity = {
+    id: number,
+    professor: string,
+    title: string,
+    description: string,
+    createdDate: Date,
+    dueDate?: Date
+}
+
+export type Answer = {
+    id: number,
+    createdDate: Date,
+    lastChangeDate: Date,
+    compartilhadoLink?: string,
+    github?:string,
+    commit?: string
+}
+
 type ReturningString = () => String | undefined;
 

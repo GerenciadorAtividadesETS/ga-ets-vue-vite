@@ -1,7 +1,7 @@
 <script lang="ts">
 import axios from "axios";
 import FormGenerator from "../components/FormGenerator.vue"
-import FormFields from '../components/type'
+import FormFields, { Field } from '../components/type'
 import { defineComponent, ref } from "vue";
 import ColorPicker from 'primevue/colorpicker';
 
@@ -30,7 +30,7 @@ export default {
                     value: "",
                     min: 6,
                 },
-            ] as FormFields.Fields[]
+            ] as Field[]
         }
     },
     methods: {
@@ -83,7 +83,7 @@ export default {
 
 <template>
     <div class="w-2/4 mb-10 min-w-[280px] flex items-center content-center justify-center">
-        <div class="bg-[#ffffff] pb-2 w-full h-fit flex flex-col items-center rounded-3xl">
+        <div class="bg-[#ffffff] pb-2 w-full h-3/5 justify-around flex flex-col items-center rounded-3xl">
             <div class="text-xl p-2">
                 Entrar
             </div>

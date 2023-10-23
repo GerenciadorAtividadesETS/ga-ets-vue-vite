@@ -2,8 +2,11 @@
 export default {
   data(){
     return{
-      isLogged:false
+      
     }
+  },
+  props:{
+    isLogged: {default: false , type:Boolean}
   }
 
 }
@@ -18,7 +21,7 @@ export default {
         <div class="w-full flex max-w-[240px] text-xl justify-around items-center">
           <router-link class="m-2" to="/">Home</router-link>
           <router-link v-if="isLogged" class="m-2" to="/subjects">Matérias</router-link>
-          <router-link class="m-2" to="/subjects">Matérias</router-link>
+          <router-link class="m-2" to="/subjects">staticM</router-link>
         </div>
         <div class="w-full pr-5 flex text-xl justify-end items-center">
           <router-link to="/login">

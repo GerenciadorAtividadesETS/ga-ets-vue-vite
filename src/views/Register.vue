@@ -1,16 +1,14 @@
 <script lang="ts">
 import axios from "axios";
 import FormGenerator from "../components/FormGenerator.vue"
-import FormFields from '../components/type'
+import FormFields, { Field } from '../components/type'
 import { defineComponent, ref } from "vue";
 import ColorPicker from 'primevue/colorpicker';
-
-
 
 export default {
     data() {
         return {
-            color: "00ffff",
+            color: "ff00ff",
             buttonName:"register",
             buttonClass:"m-2 py-1 px-4 bg-slate-300 rounded-full",
             fields: [
@@ -53,21 +51,10 @@ export default {
                     value: "",
                     specificValidator: this.isSamePassword
                 },
-            ] as FormFields.Fields[]
+            ] as Field[]
         }
     },
     methods: {
-        OnFocus(e) {
-            if (e.type == 'mousedown') {
-                this.isChangingColor = true
-            }
-            console.log(e.type);
-
-            // console.log(visible);
-
-            // this.isChangingColor = visible
-
-        },
         getFieldValueByName(name: string) {
             for (let index = 0; index < this.fields.length; index++) {
                 const element = this.fields[index];
@@ -90,6 +77,7 @@ export default {
             }
         },
         apiCallTest() {
+            this.mostrar()
             axios.get("https://viacep.com.br/ws/01001000/json/")
                 .then((res) => {
                     console.log(res.data)
@@ -113,7 +101,7 @@ export default {
             <div class="w-2/4 min-w-[260px]">
                 Select a profile color
                 <div class="border flex items-center w-full bg-white rounded-lg p-1">
-                        <ColorPicker v-model="color" :onchange="OnFocus" inputId="cp-hex" format="hex" :pt="{
+                        <ColorPicker v-model="color" inputId="cp-hex" format="hex" :pt="{
                                 root: ({ props }) => ({
                                     class: [
                                         'inline-block',
