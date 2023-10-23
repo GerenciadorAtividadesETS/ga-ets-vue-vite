@@ -1,6 +1,6 @@
 <script lang="ts">
 import SubjectCard from '../components/SubjectCard.vue';
-import { Subjects } from '../components/type';
+import { Subject } from '../components/type';
 export default {
     data() {
         return {
@@ -8,25 +8,22 @@ export default {
                 {
                     id: 0,
                     name: "nome da materia",
-                    professor: "Livia",
                     color: "000",
-                    border: "000"
+                    border: "a0a0a0"
                 },
                 {
                     id: 1,
                     name: "UM NOME BEM GRANDE PRA UMA MATERIA BEM CHATA",
-                    professor: "LIVIA PALLIARI PADOVINE",
                     color: "000",
-                    border: "000"
+                    border: "ffa0a0"
                 },
                 {
                     id: 2,
                     name: "um nome nem tão pequeno apenas para exemplificar",
-                    professor: "GUSTAVO M R MEIRA",
                     color: "000",
                     border: "000"
                 },
-            ] as Subjects[],
+            ] as Subject[],
             list: [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,]
         }
     },

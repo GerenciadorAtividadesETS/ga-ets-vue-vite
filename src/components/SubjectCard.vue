@@ -30,7 +30,7 @@ export default {
 
 
 <template>
-    <router-link :to="link"  class="w-64 h-24 shadow-md bg-white space-x-1 text-start rounded-full items-center flex flex-col overflow-hidden border-t-8 border-2" :style="{
+    <router-link :to="link"  class="w-64 h-24 shadow-md bg-white space-x-1 text-start rounded-3xl items-center flex flex-col overflow-hidden border-t-8 border-2" :style="{
       borderColor:`#${this.subject?.border}`,
       borderTopColor: `#${this.subject?.color}`,
       }" >
