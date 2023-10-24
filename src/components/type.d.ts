@@ -23,7 +23,8 @@ export type Activity = {
     title: string,
     description: string,
     createdDate: Date,
-    dueDate?: Date
+    dueDate?: Date,
+    color: string,
 }
 
 export type Answer = {

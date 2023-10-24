@@ -3,7 +3,7 @@ import { ref, watchEffect } from 'vue';
 import SubjectCard from '../components/SubjectCard.vue';
 import { Activity, Subject } from '../components/type';
 import { useRoute } from 'vue-router'
-
+import ActivityCard from '../components/ActivityCard.vue';
 
 export default {
     setup() {
@@ -17,9 +17,41 @@ export default {
                 border: "000",
                 color: "000"
             } as Subject
-        const activities = {
-
-        } as Activity
+        const activities = [
+            {
+                id: 0,
+                color:"ff0000",
+                title: "Cubo Magico Jogo da Velha",
+                description: "<div>exemplo</div>",
+                professor:"Gus Tavo",
+                createdDate: (new Date),
+                dueDate: (new Date)
+            },
+            {
+                id: 1,
+                title: "API SpringBoot",
+                color:"00ff00",
+                description: "<div>exemplo</div>",
+                professor:"Li Via",
+                createdDate: (new Date),
+            },
+            {
+                id: 2,
+                title: "Projeto Livre",
+                color:"0000ff",
+                description: "<div>exemplo</div>",
+                professor:"Leo Nardo",
+                createdDate: (new Date),
+            },
+            {
+                id: 3,
+                title: "Banco de dados",
+                color:"00ff00",
+                description: "<div>exemplo</div>",
+                professor:"Fran Cis",
+                createdDate: (new Date),
+            },
+        ] as Activity[]
         const buscarAPI = () => {
             console.log(route.params.id)
 
@@ -34,10 +66,10 @@ export default {
     },
     data() {
         return {
-            
+
         };
     },
-    components: { SubjectCard },
+    components: { SubjectCard, ActivityCard },
     methods: {
         getSubject() {
 
@@ -51,11 +83,10 @@ export default {
 </script>
 
 <template>
-    {{ subjectId }}
     <div class="mt-10 content-end flex flex-col justify-center w-full px-14">
 
         <h1 class="flex justify-between items-center mb-5 text-4xl font-semibold text-end">
-            
+
             <SubjectCard :subject="subject"></SubjectCard>
             Atividades
         </h1>
@@ -70,10 +101,10 @@ export default {
             </div>
             <!-- </div> -->
         </div>
-        <div class="h-full flex-wrap justify-evenly min-w-[272px] flex w-full mb-0 bg-white">
+        <div class="h-full flex-wrap min-w-[272px] flex flex-col w-full mb-0 bg-white">
             <div v-for="(activity, index) in activities">
-                <div :key=index class="p-4">
-                    <!-- <ActivityCard :activity="activity" /> -->
+                <div :key=index class="">
+                    <ActivityCard :activity="activity" />
                 </div>
             </div>
         </div>

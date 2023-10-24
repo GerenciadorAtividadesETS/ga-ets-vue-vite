@@ -21,7 +21,7 @@ export default {
                     id: 2,
                     name: "um nome nem tão pequeno apenas para exemplificar",
                     color: "000",
-                    border: "000"
+                    border: "a0a0a0"
                 },
             ] as Subject[],
             list: [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,]
