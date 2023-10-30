@@ -54,8 +54,8 @@ export default {
       borderLeftColor: `#${this.activity?.color}`,
       }" >
       <!-- <div class=" w-full h-1 " :style="{ backgroundColor: `#${color}`}"></div> -->
-      <div class="h-full pt-1 flex items-start flex-col gap-2 justify-between flex-wrap w-8/12">
-        <div>
+      <div class="h-full w-full pt-1 flex items-start flex-col gap-2 justify-between flex-wrap">
+        <div >
           <p class="leading-4 text-sm ">{{ activity?.title }}</p>
           <p class="text-xs text-gray-500">Abertura: &nbsp; &nbsp; &nbsp;{{ activity?.createdDate? formatDateToString(activity?.createdDate) : "" }} </p>
           <p class="text-xs text-gray-500">Vencimento:  {{ activity?.dueDate?  

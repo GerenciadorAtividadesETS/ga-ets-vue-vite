@@ -101,48 +101,8 @@ export default {
             <div class="w-2/4 min-w-[260px]">
                 Select a profile color
                 <div class="border flex items-center w-full bg-white rounded-lg p-1">
-                        <ColorPicker v-model="color" inputId="cp-hex" format="hex" :pt="{
-                                root: ({ props }) => ({
-                                    class: [
-                                        'inline-block',
-                                        {
-                                            'opacity-60 select-none pointer-events-none cursor-default': props.disabled
-                                        }
-                                    ]
-                                }),
-                                input: {
-                                    class: [
-                                        'm-2',
-                                        'font-sans text-base text-gray-600 bg-white dark:bg-gray-900 p-3 border border-gray-300 dark:border-blue-900/40 transition-colors duration-200 rounded-lg cursor-pointer',
-                                        'hover:border-blue-500 focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)] dark:focus:shadow-[0_0_0_0.2rem_rgba(147,197,253,0.5)]',
-                                        'w-8 h-8 '
-                                    ]
-                                },
-                                panel: ({ props }) => ({
-                                    class: [
-                                        'shadow-md',
-                                        'bg-gray-800 border-gray-900 mt-1',
-                                        {
-                                            'relative h-48 w-52': props.inline,
-                                            'absolute h-48 w-52': !props.inline
-                                        }
-                                    ]
-                                }),
-                                selector: 'absolute h-44 w-40 top-2 left-2',
-                                color: {
-                                    class: 'h-44 w-40',
-                                    style: 'background: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0) 100%), linear-gradient(to right, #fff 0%, rgb(255 255 255 / 0) 100%)'
-                                },
-                                colorhandle: {
-                                    class: ['rounded-full border border-solid cursor-pointer h-3 w-3 absolute  opacity-85', 'border-white']
-                                },
-                                hue: {
-                                    class: ['h-44 w-6 absolute top-2 left-44 opacity-85'],
-                                    style: 'background: linear-gradient(0deg, red 0, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, red)'
-                                },
-                                huehandle: 'border-solid border-2 cursor-pointer h-2 w-8 left-0 -ml-1 -mt-1 opacity-85 absolute',
-                                // transition: TRANSITIONS.overlay
-                            }" />#{{ color }}
+                        <ColorPicker v-model="color" inputId="cp-hex" format="hex" 
+                         />#{{ color }}
                 </div>
                 <FormGenerator :buttonName="buttonName" :buttonClass="buttonClass" :action="apiCallTest" :fields="fields" />
             </div>

@@ -29,7 +29,6 @@ export type Activity = {
 
 export type Answer = {
     id: number,
-    createdDate: Date,
     lastChangeDate: Date,
     compartilhadoLink?: string,
     github?:string,

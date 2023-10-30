@@ -13,7 +13,7 @@ export default {
 </script>
 
 <template>
-  <header class="flex flex-col drop-shadow-lg bg-white w-full items-start">
+  <header class="flex z-50 flex-col drop-shadow-lg bg-white w-full items-start">
     <img class="object-fill h-1 w-full" src="/src/assets/boschgraphic.png" alt="bosch supergraphic" />
 
     <div class="flex flex-row justify-between w-screen h-14">
