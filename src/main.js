@@ -8,10 +8,10 @@ import router from './router'
 // import primevuestyle from './primevuestyle';
 import Tailwind from "primevue/passthrough/tailwind"
 
- 
+
             // optional
 createApp(App)
     .use(router)
     
-    .use(PrimeVue, { ripple: true , unstyled: true, pt: Tailwind, ptOptions: { mergeProps: true } })
+    .use(PrimeVue, { pt: Tailwind })
     .mount('#app')
