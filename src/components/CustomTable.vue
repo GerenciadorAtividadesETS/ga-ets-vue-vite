@@ -4,30 +4,49 @@ export default {
         headers: [],
         values: [],
     },
+    data() {
+        return {
+            y: 0
+        }
+    },
     methods: {
         style(i: number) {
-            if (i == this.headers.length - 1) {
-                return "border-black border-b"
+            var obj = {} as any
+            if (i != this.headers.length - 1) {
+                obj.borderBottomWidth = "3px";
             }
-            return "border-black border-b"
+            return obj
+        },
+        getWindowHeight() {
+            this.y = this.$refs.todo.clientHeight;
         }
-    }
+    },
+    mounted() {
+        // const that = this
+        this.showDiv = true
+        this.$nextTick(function () {
+            this.getWindowHeight()
+        });
+    },
 
 }
+
 </script>
 
 <template>
-    <div class="flex flex-row">
-
-        <div class="flex flex-col border border-black rounded-l-lg">
-            <div class="border-b-[1px]" :style="{
-                borderBottomWidth: 10,
-                borderColor: `#000`,
-            }" :key="index" v-for="(header, index) in headers">{{ header }}{{ index }}</div>
-            <p class="border-black border-b" :key="index" v-for="(header, index) in headers">{{ header }}{{ index }}</p>
+    <!-- <div class="flex flex-row w-full bg-[#D9D9D9] rounded-xl"> -->
+    <div class="flex flex-row w-full bg-[#D9D9D9] rounded-xl">
+        <div class="flex flex-col" ref="todo">
+            <div class="p-1 border-r-[3px] border-white" :ref="`h${index}`" :style="style(index)" :key="index"
+                v-for="(header, index) in headers">
+                {{ header }}
+            </div>
+            <!-- <p class="border-black border-b" :key="index" v-for="(header, index) in headers">{{ header }}{{ index }}</p> -->
         </div>
-        <div class="flex flex-col">
-            <p v-for="value in values">{{ value }}</p>
+        <div class="flex flex-col w-full">
+            <p class="p-1 w-full border-white" :style="style(index)" :ref="`v${index}`" v-for="(header, index) in headers">
+                {{ this.values[index] != null ? this.values[index] : "-" }}</p>
         </div>
     </div>
+    
 </template>
