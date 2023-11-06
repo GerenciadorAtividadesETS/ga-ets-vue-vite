@@ -1,3 +1,5 @@
+import { List } from "postcss/lib/list";
+
 export type Field = {
     name: string
     value: string,
@@ -34,6 +36,16 @@ export type Answer = {
     github?:string,
     commit?: string
 }
+
+export type Table = {
+    id: number,
+    headers: Headers[],
+    contents?: StringFunction,
+    
+}
+type Headers = { value: string, aditional: string | undefined, show: boolean | undefined }
+
+type StringFunction = (string | ReturningString)[]
 
 type ReturningString = () => String | undefined;
 
