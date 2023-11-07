@@ -1,12 +1,18 @@
-<script>
+<script lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
 import TheHeader from './components/TheHeader.vue';
 // import ChildComp from './ChildComp.vue'
-
+import { User } from './components/type'
 export default {
   data(){
     return{
-      user: false
+      isUserLogged: false,
+      user: {
+            edv:"12312312",
+            name:"Gustavinho",
+            color:"27AAAF",
+            class: 5,
+        } as User
     }
   },
   components: {
@@ -15,7 +21,7 @@ export default {
   },
   methods: {
     login(){
-      this.user = !this.user
+      this.isUserLogged = !this.isUserLogged
     }
   }
 }
@@ -23,7 +29,7 @@ export default {
 
 <template>
   <div class="h-fit min-h-screen overflow-x-hidden flex flex-col  bg-slate-300">
-    <TheHeader class="fixed" :is-logged="user"></TheHeader>
+    <TheHeader class="fixed" :is-logged="isUserLogged" :user="user" ></TheHeader>
     
     <div class="flex justify-center mt-[3.75rem] flex-1 ">
       <!-- <button :onclick="login">login</button> -->

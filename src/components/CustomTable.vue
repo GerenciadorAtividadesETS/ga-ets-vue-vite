@@ -1,16 +1,16 @@
 <script lang="ts">
-    import { Table } from './type';
-    import { faUserSecret, faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
+import { Table } from './type';
+import { faUserSecret, faCircleQuestion } from '@fortawesome/free-solid-svg-icons'
 
-    import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 export default {
     props: {
-        info: {} as ()=> Table,
+        info: {} as () => Table,
     },
     data() {
         return {
             mouseup: false,
-            
+
         }
     },
     methods: {
@@ -25,17 +25,18 @@ export default {
             this.y = this.$refs.todo.clientHeight;
         },
         showHide(e: MouseEvent, index) {
-            if (this.info.headers[index].show){
+            if (this.info.headers[index].show) {
                 this.info.headers[index].show = false
-            }else{
+            } else {
                 this.info.headers[index].show = true
             }
             console.log(this.info.headers[index].show);
         },
-        leave(e: MouseEvent, index){
-            console.log("saiu" + index);
-            
-        }
+        click(e: MouseEvent) {
+            // console.log("lcicou" );
+
+        },
+        
     },
     mounted() {
         // const that = this
@@ -45,7 +46,7 @@ export default {
             this.getWindowHeight()
         });
     },
-    components:{
+    components: {
         FontAwesomeIcon
     }
 
@@ -54,25 +55,42 @@ export default {
 </script>
 
 <template>
-    <!-- <div class="flex flex-row w-full bg-[#D9D9D9] rounded-xl"> -->        
-    <div class="flex flex-row w-full overflow-x-scroll bg-[#D9D9D9] rounded-xl">
+    <!-- <div class="flex flex-row w-full bg-[#D9D9D9] rounded-xl"> -->
+    <div class="flex flex-row w-full overflow-auto bg-[#D9D9D9] rounded-xl">
         <div class="flex flex-col" ref="todo">
             <div class="p-2 flex-nowrap flex border-r-[3px] border-white" :ref="`h${index}`" :style="style(index)"
-                :key="index" v-for="(header, index) in (this.info.headers )">
+                :key="index" v-for="(header, index) in (this.info.headers)">
                 <h1 class="flex-none w-full justify-between flex truncate max-w-[4rem] sm:max-w-[20rem] md:max-w-[48rem]">
                     <p class="truncate">
-                        {{ header.value }}&nbsp;        
+                        {{ header.value }}&nbsp;
                     </p>
-                    <p @:mouseleave="showHide($event, index )" @:mouseenter="showHide($event, index )" v-if="header.aditional">
-                        <font-awesome-icon icon="circle-question" /><h1 v-if="header.show" class="absolute whitespace-break-spaces break-words max-w-full bg-white p-1 border border-black rounded-md">{{ header.aditional }}</h1>
+                    <p @:mouseleave="showHide($event, index)" @:mouseenter="showHide($event, index)"
+                        v-if="header.aditional">
+                        <font-awesome-icon icon="circle-question" />
+                    <h1 v-if="header.show"
+                        class="absolute whitespace-break-spaces break-words max-w-full bg-white p-1 border border-black rounded-md">
+                        {{ header.aditional }}</h1>
                     </p>
                 </h1>
             </div>
             <!-- <p class="border-black border-b" :key="index" v-for="(header, index) in headers">{{ header }}{{ index }}</p> -->
         </div>
-        <div class="flex flex-col w-full">
-            <p class="p-2 w-full  border-white flex flex-none truncate" :style="style(index)" :ref="`v${index}`" v-for="(header, index) in this.info.headers">
-                {{  this.info.contents[index] == null || this.info.contents[index].trim() == "" ? "-" : this.info.contents[index]}}</p>
+        
+        <div class="flex flex-col min-w-fit w-full">
+            
+            <p class="p-2 w-fit min-w-full border-white  flex whitespace-nowrap flex-nowrap" :style="style(index)"
+                :ref="`v${index}`" v-for="(header, index) in this.info.headers">
+                <h1 v-if="!this.info.contents[index]?.value || this.info.contents[index]?.value.trim() == ''">
+                    -
+                </h1>
+                <h1 v-else-if="this.info.contents[index]?.function">
+                    <font-awesome-icon class="cursor-pointer" v-on:click="()=>{this.info.contents[index]?.function()}" :icon="this.info.contents[index]?.icon??'circle-question'" />
+                    {{this.info.contents[index]?.value}}
+                </h1>
+                <h1 v-else>
+                    {{this.info.contents[index]?.value}}
+                </h1>
+            </p>
         </div>
     </div>
 </template>

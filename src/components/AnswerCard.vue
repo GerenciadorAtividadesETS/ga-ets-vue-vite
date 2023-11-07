@@ -1,28 +1,73 @@
 <script lang="ts">
 import CustomTable from './CustomTable.vue';
-import { Answer, Table } from './type';
+import { Answer } from './type';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';   // optional
 import Row from 'primevue/row';
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { Table, User } from './type';
 
 export default {
+    setup(props, ctx) {
+        // retorno da api.then setar variavel 
+        // console.log();
+        
+        const user:User = {
+            edv:"12312312",
+            name:"Gustavinho",
+            color:"27AAAF",
+            class: 5,
+        }
+        
+        
+        let formatNum = (num: number) =>{
+            return num.toString().length == 1 ? "0"+ num.toString() : num.toString()
+        }
+        const copy = () => {
+
+            let textCopy = 
+            "S:\\PM\\ter\\ets\\Inter_Setor\\COMPARTILHADO\\APRENDIZES\\DIGITAL_SOLUTIONS_" 
+            + formatNum(user.class) 
+            + "\\"
+            + props.answer?.compartilhadoLink
+            
+            navigator.clipboard.writeText(textCopy)
+            
+        }
+        const info:Table = {
+            headers: [
+                { value: "Tempo Restante" },
+                { value: "Ultima alteração" },
+                { value: "Compartilhado",show:false, aditional: "Compartilhado: O link no compartilhado já leva em conta a pasta Aprendizes e a sua turma, porém mesmo copiando o caminho inteiro." },
+                { value: "Github",show:false, aditional: "GitHub: Verificar se o projeto contem informações sensiveis da BOSCH antes de publicar, caso houver, crie como repositorio privado e de acesso ao(s) instrutor(es)" },
+                { value: "Comentario" },
+            ],
+            contents:
+            [
+                { value: props.dueDate?.toLocaleString()?? "" },
+                { value: props.answer?.lastChangeDate?.toDateString()?? "" },
+                { value: props.answer?.compartilhadoLink?? "-", function: () => { copy(); }, icon: "copy" },
+                { value: "https://github.com/Honkato/Delivery" },
+                { value: props.answer?.commit?? ""}
+            ]
+        }
+
+
+        return {
+            copy,
+            info,
+            user
+        }
+    },
     props: {
-        answer: {} as () => Answer
+        answer: {} as () => Answer,
+        dueDate: Date
     },
     data() {
         return {
-            info: {
-                headers: [
-                    { value: "Tempo Restante" , aditional:"Vai toma, fala dele"},
-                    { value: "Ultima alteração" },
-                    { value: "Compartilhado", aditional: "Compartilhado: O link no compartilhado já leva em conta a pasta Aprendizes e a sua turma, porém mesmo copiando o caminho inteiro." },
-                    { value: "Github" , aditional:"GitHub: Verificar se o projeto contem informações sensiveis da BOSCH antes de publicar, caso houver, crie como repositorio privado e de acesso ao(s) instrutor(es)"},
-                    { value: "Comentario" },
-                ],
-                contents:
-                    ["5 dias", "<icone></icone>GUSTAVO_MIGUEL_RONCADA_MEIRA\\TRILHA_DEV\\AULAS JAVA\\GAE", "https://github.com/Honkato/Delivery"]
-            } as Table,
+
             values: ["a", "b", "c",],
             // values: [
             // { field: 'Tempo Restante', value: "5 dias" },
@@ -37,12 +82,15 @@ export default {
         ColumnGroup,
         Row,
         CustomTable,
+    },
+    methods: {
+
     }
 }
 </script>
 
 <template>
-    {{ answer }}
+    <!-- {{ answer }} -->
     <CustomTable :info="this.info" />
     <!-- <DataTable :value="this.values" :showGridlines="true" tableStyle="" -->
     <!-- <DataTable :value="this.values" tableStyle=""

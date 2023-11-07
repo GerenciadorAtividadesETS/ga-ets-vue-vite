@@ -38,7 +38,7 @@ export default {
             if (e.type == 'mousedown') {
                 this.isChangingColor = true
             }
-            console.log(e.type);
+            // console.log(e.type);
 
             // console.log(visible);
 
@@ -54,10 +54,10 @@ export default {
             }
         },
         isSamePassword() {
-            console.log("--");
+            // console.log("--");
 
-            console.log(this.getFieldValueByName("Confirmar Senha"));
-            console.log(this.getFieldValueByName("Senha"));
+            // console.log(this.getFieldValueByName("Confirmar Senha"));
+            // console.log(this.getFieldValueByName("Senha"));
 
             if (this.getFieldValueByName("Senha") != this.getFieldValueByName("Confirmar Senha")) {
                 return "Senhas não sao iguais"
@@ -69,7 +69,7 @@ export default {
         apiCallTest() {
             axios.get("https://viacep.com.br/ws/01001000/json/")
                 .then((res) => {
-                    console.log(res.data)
+                    // console.log(res.data)
                 })
         },
     },

@@ -10,14 +10,14 @@ export default {
         const route = useRoute();
         const subjectId = route.params.subjectId;
         const activityId = route.params.activityId;
-        const answer = {
+        const answer:Answer = {
             id: 0,
             lastChangeDate: (new Date),
-            compartilhadoLink: "",
-            github: "",
+            compartilhadoLink: "GUSTAVO_MIGUEL_RONCADA_MEIRA\\TRILHA_DEV\\AULAS JAVA\\GAE",
+            github: "https://github.com/Honkato/Delivery",
             commit: ""
-        } as Answer;
-        const activity = {
+        };
+        const activity:Activity = {
             id: 0,
             color: "ff0000",
             title: "Cubo Magico Jogo da Velha",
@@ -25,9 +25,9 @@ export default {
             professor: "Gus Tavo",
             createdDate: (new Date),
             dueDate: (new Date)
-        } as Activity;
+        };
         const buscarAPI = () => {
-            console.log(route.params.id);
+            // console.log(route.params.id);
         };
         buscarAPI();
         return {
@@ -39,9 +39,9 @@ export default {
     },
     methods: {
         twoDigits(digit: string) {
-            console.log(".");
+            // console.log(".");
             digit = digit + "";
-            console.log(digit.length);
+            // console.log(digit.length);
             digit = digit.length < 2 ? "0" + digit : digit;
             return digit;
         },
@@ -64,26 +64,32 @@ export default {
 
         <div class="flex flex-row items-center py-4">
             <div class="h-10 w-10 rounded-2xl mr-4" :style="{ backgroundColor: ` #${activity.color}` }"></div>
-            <h1 class="text-xl font-semibold"> {{ activity.title }}</h1>
+            <h1 class="text-2xl font-semibold"> {{ activity.title }}</h1>
         </div>
         <div
             class="p-2 gap-2 justify-between flex-col drop-shadow-md min-w-[272px] flex w-full mb-0 bg-white px-5">
             <!-- <div class="flex h-fit flex-row w-full items-center justify-between"> -->
-            <div class="">
+                <h1 class="text-xl font-semibold"> Detalhes</h1>
+                <div class="">
                 <p>
-                    Aberto: {{ formatDateToString(this.activity.createdDate) }}
+                    <!-- Aberto: {{ formatDateToString(this.activity.createdDate) }} -->
+                    Aberto: {{ activity.createdDate.toLocaleString() }}
                 </p>
                 <p>
-                    Vencimento: {{ this.activity.dueDate? formatDateToString(this.activity.dueDate) : "-"}}
+                    Vencimento: {{ activity.dueDate?.toLocaleString()?? "-"}}
                 </p>
             </div>
             
             <div class="w-full h-[2px] rounded-full bg-gray-500"></div>
-            <div class="">
-                {{ this.activity.description }}
-            </div>
+            <h1 class="text-xl font-semibold"> Atividade</h1>
+            <!-- <h1 class="text-xl font-semibold"> {{ activity.title }}</h1> -->
 
-            <AnswerCard :answer="this.answer" />
+            <div class="">
+                {{ activity.description }}
+            </div>
+            <h1 class="text-xl font-semibold">Sua Resposta</h1>
+
+            <AnswerCard :answer="answer" :dueDate="activity?.dueDate"/>
             <!-- <div class="h-0.5 md:block hidden w-36 rounded-full bg-gray-300"></div> -->
 
             <!-- </div> -->

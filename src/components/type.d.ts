@@ -1,4 +1,10 @@
-import { List } from "postcss/lib/list";
+
+export type User = {
+    edv: string,
+    name: stiring,
+    color: string,
+    class: number
+}
 
 export type Field = {
     name: string
@@ -38,13 +44,14 @@ export type Answer = {
 }
 
 export type Table = {
-    id: number,
+
     headers: Headers[],
-    contents?: StringFunction,
+    contents?: Contents[],
     
 }
-type Headers = { value: string, aditional: string | undefined, show: boolean | undefined }
+type Headers = { value: string, aditional?: string, show?: boolean}
 
+type Contents = {value: string, function?: ()=> undefined, icon?: string}
 type StringFunction = (string | ReturningString)[]
 
 type ReturningString = () => String | undefined;

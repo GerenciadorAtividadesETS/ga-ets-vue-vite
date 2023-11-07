@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+import { User } from './type';
+
 export default {
   data() {
     return {
@@ -6,7 +8,8 @@ export default {
     }
   },
   props: {
-    isLogged: { default: false, type: Boolean }
+    isLogged: { default: false, type: Boolean },
+    user: {} as () => User
   }
 
 }
@@ -25,7 +28,7 @@ export default {
       </div>
       <div class="w-full pr-5 flex text-xl justify-end items-center">
         <router-link to="/login">
-          <div class="bg-black h-12 w-12 rounded-full"></div>
+          <div :style="{ backgroundColor: `#${user?.color?? '000000'}` }" class="h-12 w-12 rounded-full"></div>
         </router-link>
       </div>
     </div>

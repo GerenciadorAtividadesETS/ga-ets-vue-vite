@@ -27,7 +27,7 @@ export default {
             // as the argument.
             if (e.target instanceof HTMLInputElement) {
                 this.fields[id].value = e.target.value;
-                console.log(this.fields[id].value);
+                // console.log(this.fields[id].value);
             }
         },
         runInputValidation() {

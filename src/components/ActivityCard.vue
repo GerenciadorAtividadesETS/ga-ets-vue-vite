@@ -20,9 +20,9 @@ export default {
   },
   methods: {
     twoDigits(digit: string){
-      console.log(".");
+      // console.log(".");
       digit = digit + ""
-      console.log(digit.length);
+      // console.log(digit.length);
       
       digit = digit.length < 2? "0"+digit : digit
       return digit

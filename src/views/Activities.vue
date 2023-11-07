@@ -54,7 +54,7 @@ export default {
             },
         ] as Activity[]
         const buscarAPI = () => {
-            console.log(route.params.id)
+            // console.log(route.params.id)
 
         }
         buscarAPI()

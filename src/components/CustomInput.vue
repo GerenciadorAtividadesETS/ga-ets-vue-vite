@@ -51,7 +51,7 @@ export default {
                 this.field?.type == 'number'?e.target.value = e.target.value.replace(/[^0-9]/g, ""):null
                 this.field.value = e.target.value;
                 this.validate()
-                console.log(this.field.value);
+                // console.log(this.field.value);
             }
         },
     },
