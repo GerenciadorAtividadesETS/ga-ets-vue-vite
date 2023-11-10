@@ -48,9 +48,9 @@ export default {
             [
                 { value: props.dueDate?.toLocaleString()?? "" },
                 { value: props.answer?.lastChangeDate?.toDateString()?? "" },
-                { value: props.answer?.compartilhadoLink?? "-", function: () => { copy(); }, icon: "copy" },
-                { value: "https://github.com/Honkato/Delivery" },
-                { value: props.answer?.commit?? ""}
+                { value: props.answer?.compartilhadoLink?? "-", function: () => { copy(); }, icon: "copy", editable:true },
+                { value: "https://github.com/Honkato/Delivery", editable:true },
+                { value: props.answer?.commit?? "", editable:true }
             ]
         }
 
@@ -63,7 +63,8 @@ export default {
     },
     props: {
         answer: {} as () => Answer,
-        dueDate: Date
+        dueDate: Date,
+        edit: Boolean
     },
     data() {
         return {
@@ -73,6 +74,7 @@ export default {
             // { field: 'Tempo Restante', value: "5 dias" },
             // { field: '' }],
             columns: [{ field: "field", header: "" }, { field: "value", header: "" }],
+            
 
         }
     },
@@ -84,14 +86,17 @@ export default {
         CustomTable,
     },
     methods: {
-
+        
     }
 }
 </script>
 
 <template>
     <!-- {{ answer }} -->
-    <CustomTable :info="this.info" />
+    <CustomTable :info="this.info" :edit="edit"/>
+    <div v-if="edit" class="flex justify-end">
+        <button onclick="" class="bg-green-400 w-14 p-1 rounded-lg">salvar</button>
+    </div>
     <!-- <DataTable :value="this.values" :showGridlines="true" tableStyle="" -->
     <!-- <DataTable :value="this.values" tableStyle=""
     :pt="{

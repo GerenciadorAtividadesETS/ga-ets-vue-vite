@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import PrimeVue from "primevue/config";
+import Tooltip from 'primevue/tooltip';
 import "primevue/resources/primevue.min.css"; /* Deprecated */
 import './style.css'
 
@@ -24,5 +25,6 @@ library.add(faCopy)
 createApp(App)
     .use(router)
     .component('font-awesome-icon', FontAwesomeIcon)
+    .directive('tooltip', Tooltip)
     .use(PrimeVue, { pt: Tailwind })
     .mount('#app')

@@ -51,7 +51,7 @@ export type Table = {
 }
 type Headers = { value: string, aditional?: string, show?: boolean}
 
-type Contents = {value: string, function?: ()=> undefined, icon?: string}
+type Contents = {value: string, function?: ()=> undefined, icon?: string, editable?: boolean}
 type StringFunction = (string | ReturningString)[]
 
 type ReturningString = () => String | undefined;

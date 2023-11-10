@@ -53,6 +53,12 @@ export default {
             newDate += " " + this.twoDigits(date.getHours()) + ":";
             newDate += this.twoDigits(date.getMinutes());
             return newDate;
+        },
+        
+    },
+    data(){
+        return{
+            edit: false,
         }
     },
     components: { AnswerCard }
@@ -87,9 +93,13 @@ export default {
             <div class="">
                 {{ activity.description }}
             </div>
-            <h1 class="text-xl font-semibold">Sua Resposta</h1>
+            <div class=" w-full flex items-center justify-between">
 
-            <AnswerCard :answer="answer" :dueDate="activity?.dueDate"/>
+                <h1 class="text-xl font-semibold">Sua Resposta</h1>
+                <button :onclick="()=>{edit= !edit}" class="bg-blue-400 p-1 rounded-md w-14"> Editar</button>
+            </div>
+            <AnswerCard :answer="answer" :dueDate="activity?.dueDate" :edit="edit"/>
+            
             <!-- <div class="h-0.5 md:block hidden w-36 rounded-full bg-gray-300"></div> -->
 
             <!-- </div> -->
