@@ -9,7 +9,7 @@ export default {
     props: {
         field: Object as () => Field,
     },
-    emits: ['validateInput'],
+    emits: ['validate-input'],
     methods: {
         validators(field: Field) {
             if (field?.required && field.value.toString() == "") {
@@ -61,7 +61,6 @@ export default {
 
 <template>
     <div class="flex flex-col w-full">
-        <!-- // [Vue warn]: Component emitted event "validate-input" but it is neither declared in the emits option nor as an "onValidate-input" prop. -->
         {{ field?.name }}
         <input :required="field?.required" :type="field?.type" :placeholder="field?.placeholder ?? field?.name"
             class="border w-full p-2 h-8 rounded-md" @input="this.onInput($event)">

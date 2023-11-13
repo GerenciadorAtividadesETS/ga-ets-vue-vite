@@ -6,6 +6,7 @@ export default {
     return {
       count: 0,
       link: `${this.$route.path}/${this.activity?.id}`
+      // link: `${this.$route.path}/${this.activity?.id}`
     }
   },
 
@@ -49,6 +50,7 @@ export default {
 
 
 <template>
+    <!-- <router-link :to="{path: $route.path, query: { q: activity?.id}}"  class="h-24 shadow-md bg-white space-x-1 text-start items-center flex pl-5 overflow-hidden border-l-8 border-2" :style="{ -->
     <router-link :to="link"  class="h-24 shadow-md bg-white space-x-1 text-start items-center flex pl-5 overflow-hidden border-l-8 border-2" :style="{
       borderColor:`#${this.activity?.border}`,
       borderLeftColor: `#${this.activity?.color}`,

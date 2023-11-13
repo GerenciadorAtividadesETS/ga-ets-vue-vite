@@ -10,13 +10,7 @@ export default {
         const route = useRoute();
         const subjectId = route.params.subjectId;
         const activityId = route.params.activityId;
-        const answer:Answer = {
-            id: 0,
-            lastChangeDate: (new Date),
-            compartilhadoLink: "GUSTAVO_MIGUEL_RONCADA_MEIRA\\TRILHA_DEV\\AULAS JAVA\\GAE",
-            github: "https://github.com/Honkato/Delivery",
-            commit: ""
-        };
+        
         const activity:Activity = {
             id: 0,
             color: "ff0000",
@@ -34,11 +28,12 @@ export default {
             subjectId,
             activityId,
             activity,
-            answer,
+            
         };
     },
     methods: {
         twoDigits(digit: string) {
+            
             // console.log(".");
             digit = digit + "";
             // console.log(digit.length);
@@ -92,13 +87,15 @@ export default {
 
             <div class="">
                 {{ activity.description }}
+                {{ typeof(activityId) }}
             </div>
             <div class=" w-full flex items-center justify-between">
 
                 <h1 class="text-xl font-semibold">Sua Resposta</h1>
                 <button :onclick="()=>{edit= !edit}" class="bg-blue-400 p-1 rounded-md w-14"> Editar</button>
             </div>
-            <AnswerCard :answer="answer" :dueDate="activity?.dueDate" :edit="edit"/>
+            <AnswerCard :activityId='activityId.toString()' :dueDate="activity?.dueDate" :edit="edit"/>
+            <!-- <AnswerCard :answer="answer" :dueDate="activity?.dueDate" :edit="edit"/> -->
             
             <!-- <div class="h-0.5 md:block hidden w-36 rounded-full bg-gray-300"></div> -->
 
