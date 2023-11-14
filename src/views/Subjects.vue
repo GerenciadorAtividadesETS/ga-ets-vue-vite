@@ -23,6 +23,21 @@ export default {
                     color: "000",
                     border: "a0a0a0"
                 },
+                {
+                    id: 2,
+                    name: "um nome nem tão pequeno apenas para exemplificar",
+                    color: "000",
+                    border: "a0a0a0"
+                },
+                {
+                    id: 2,
+                    name: "um nome nem tão pequeno apenas para exemplificar",
+                    color: "000",
+                    border: "a0a0a0"
+                },
+                
+                
+                
             ] as Subject[],
             list: [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,]
         }
@@ -34,7 +49,7 @@ export default {
 
 </script>
 <template>
-    <div class="mt-10 content-end flex flex-col justify-center w-full px-14">
+    <div class="mt-10 content-end max-w-6xl flex flex-col justify-center  px-14">
         <h1 class="text-4xl font-semibold text-end">
             Matérias
         </h1>

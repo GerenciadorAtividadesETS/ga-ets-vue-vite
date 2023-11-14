@@ -84,15 +84,16 @@ export default {
 </script>
 
 <template>
-    <div class="mt-10 content-end flex flex-col justify-center w-full px-14">
+    <div class="mt-10 content-end flex flex-col justify-center w-[75rem] px-14">
 
-        <h1 class="flex flex-col sm:flex-row justify-between items-center mb-5 text-4xl font-semibold text-end">
+        <h1 
+        class="flex flex-col-reverse sm:flex-row justify-between items-center mb-5 text-4xl font-semibold text-end">
 
             <SubjectCard :subject="subject"></SubjectCard>
             Atividades
         </h1>
         <div
-            class=" sm:flex-row p-2 gap-2 items-center justify-between flex-col-reverse drop-shadow-md min-w-[272px] flex w-full mb-0 bg-white">
+            class=" sm:flex-row p-2 gap-2 items-center justify-between flex-col-reverse drop-shadow-md min-w-[280px] flex w-full mb-0 bg-white">
             <!-- <div class="flex h-fit flex-row w-full items-center justify-between"> -->
             <div class="h-20">
                 <div class="flex flex-row flex-nowrap items-center"><div class="mt-1 mr-1 h-2 w-2 bg-[#0000ff]"></div>No prazo</div>

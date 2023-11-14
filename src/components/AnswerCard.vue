@@ -9,7 +9,10 @@ import { Table, User } from './type';
 import axios from 'axios';
 import GaeAPI from '../apis/gaeAPI'
 
+type arrayBool = { value: Boolean }
+
 export default {
+
     setup(props, ctx) {
         // retorno da api.then setar variavel 
         // console.log();
@@ -82,7 +85,7 @@ export default {
                     { value: props.dueDate?.toLocaleString() ?? "" },
                     { value: answer?.lastChangeDate?.toDateString() ?? "" },
                     { value: answer?.compartilhadoLink ?? "-", function: () => { copy(); }, icon: "copy", editable: true },
-                    { value: answer?.github?? "-", editable: true },
+                    { value: answer?.github ?? "-", editable: true },
                     { value: answer?.commit ?? "", editable: true }
                 ]
         }
@@ -98,7 +101,6 @@ export default {
         // answer: {} as () => Answer,
         activityId: String,
         dueDate: Date,
-        edit: Boolean
     },
     data() {
         return {
@@ -107,7 +109,8 @@ export default {
             // { field: 'Tempo Restante', value: "5 dias" },
             // { field: '' }],
             columns: [{ field: "field", header: "" }, { field: "value", header: "" }],
-            _info: {} as Table
+            _info: {} as Table,
+            edit: false
         }
     },
     components: {
@@ -127,24 +130,26 @@ export default {
         },
         runReturnInfo() {
             if (this.$refs.customTable) {
+                this.edit = false
                 this.$refs.customTable.triggerReturnInfo()
             }
         },
-        cancelChanges(){
-            if (this.$refs.customTable){
+        cancelChanges() {
+            if (this.$refs.customTable) {
                 this.$refs.customTable.cancelChanges()
             }
         },
-        runCancelChanges(){
-            if (this.$refs.customTable){
+        runCancelChanges() {
+            if (this.$refs.customTable) {
+                this.edit = false
+                console.log(this.edit);
                 this.$refs.customTable.triggerCancelChanges()
-                
             }
         }
     },
     mounted() {
 
-        
+
 
     },
 }
@@ -152,12 +157,17 @@ export default {
 
 <template>
     <!-- {{ answer }} -->
-    <CustomTable @return-info="returnInfo" @cancel-changes="cancelChanges" :info="this.info" :edit="edit" ref="customTable" />
-    
+    <div class=" w-full flex items-center justify-between">
+
+        <h1 class="text-xl font-semibold">Sua Resposta</h1>
+        <button :onclick="() => { edit = !edit }" class="bg-blue-400 p-1 rounded-md w-14"> Editar</button>
+    </div>
+    <CustomTable @return-info="returnInfo" @cancel-changes="cancelChanges" :info="this.info" :edit="edit"
+        ref="customTable" />
+
     <div v-if="edit" class="flex justify-end">
         <button :onclick="() => runCancelChanges()" class="bg-red-400 w-16 p-1 rounded-lg mr-2">cancelar</button>
         <button :onclick="() => runReturnInfo()" class="bg-green-400 w-16 p-1 rounded-lg">salvar</button>
     </div>
     <!-- <DataTable :value="this.values" :showGridlines="true" tableStyle="" -->
-    
 </template>

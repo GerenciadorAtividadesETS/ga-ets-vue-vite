@@ -53,7 +53,6 @@ export default {
     },
     data(){
         return{
-            edit: false,
         }
     },
     components: { AnswerCard }
@@ -61,14 +60,15 @@ export default {
 </script>
 
 <template>
-    <div class="content-end flex flex-col w-full px-14">
+    <div class="mt-10 content-end min-w-[392px] px-14 flex flex-col w-full">
 
-        <div class="flex flex-row items-center py-4">
-            <div class="h-10 w-10 rounded-2xl mr-4" :style="{ backgroundColor: ` #${activity.color}` }"></div>
+        <div 
+        class="flex flex-row mb-5 text-4xl font-semibold text-end items-center">
+            <div class="min-h-[2.5rem] max-h-[2.5rem] max-w-[2.5rem] min-w-[2.5rem] rounded-2xl mr-2" :style="{ backgroundColor: ` #${activity.color}` }"></div>
             <h1 class="text-2xl font-semibold"> {{ activity.title }}</h1>
         </div>
         <div
-            class="p-2 gap-2 justify-between flex-col drop-shadow-md min-w-[272px] flex w-full mb-0 bg-white px-5">
+            class="p-2 gap-2 justify-between flex-col drop-shadow-md flex mb-0 bg-white px-5">
             <!-- <div class="flex h-fit flex-row w-full items-center justify-between"> -->
                 <h1 class="text-xl font-semibold"> Detalhes</h1>
                 <div class="">
@@ -89,12 +89,9 @@ export default {
                 {{ activity.description }}
                 {{ typeof(activityId) }}
             </div>
-            <div class=" w-full flex items-center justify-between">
-
-                <h1 class="text-xl font-semibold">Sua Resposta</h1>
-                <button :onclick="()=>{edit= !edit}" class="bg-blue-400 p-1 rounded-md w-14"> Editar</button>
-            </div>
-            <AnswerCard :activityId='activityId.toString()' :dueDate="activity?.dueDate" :edit="edit"/>
+            
+                <AnswerCard :activityId='activityId.toString()' :dueDate="activity?.dueDate"/>
+            
             <!-- <AnswerCard :answer="answer" :dueDate="activity?.dueDate" :edit="edit"/> -->
             
             <!-- <div class="h-0.5 md:block hidden w-36 rounded-full bg-gray-300"></div> -->

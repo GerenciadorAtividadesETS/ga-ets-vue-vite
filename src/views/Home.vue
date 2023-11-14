@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white w-11/12">
+    <div class="bg-white max-w-6xl">
         <h1>
             Seja Bem-Vindo ao Gendenciador de Atividades da ETS
         </h1>
