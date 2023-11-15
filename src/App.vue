@@ -29,9 +29,9 @@ export default {
 
 <template>
   <div class="h-fit min-h-screen overflow-x-hidden flex flex-col  bg-slate-300">
-    <TheHeader class="fixed" :is-logged="isUserLogged" :user="user" ></TheHeader>
+    <TheHeader :is-logged="isUserLogged" :user="user" ></TheHeader>
     
-    <div class="flex justify-center mt-[3.75rem] flex-1 ">
+    <div class="flex justify-center flex-1 ">
       <!-- <button :onclick="login">login</button> -->
       <router-view></router-view>
     </div>

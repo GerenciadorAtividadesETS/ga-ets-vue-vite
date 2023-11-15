@@ -60,7 +60,7 @@ export default {
 </script>
 
 <template>
-    <div class="mt-10 content-end min-w-[392px] px-14 flex flex-col w-full">
+    <div class="content-end min-w-[392px] px-14 flex flex-col w-[75rem]">
 
         <div 
         class="flex flex-row mb-5 text-4xl font-semibold text-end items-center">

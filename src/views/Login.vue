@@ -6,6 +6,7 @@ import { defineComponent, ref } from "vue";
 import ColorPicker from 'primevue/colorpicker';
 import Breadcrumb from "primevue/breadcrumb";
 import CustomBreadcrumb from "../components/CustomBreadcrumb.vue";
+import { MenuItem } from "primevue/menuitem";
 
 
 export default {
@@ -13,14 +14,7 @@ export default {
         return {
             buttonName: "entrar",
             buttonClass: "m-2 py-1 px-4 bg-slate-300 rounded-full",
-            home: {
-                label: 'pi pi-home',
-                to: '/',
-            },
-            items: [
-                { label: 'Computer', to:"/" },
-                { label: 'Notebook' },
-            ],
+            
             fields: [
                 {
                     name: "EDV",
@@ -93,9 +87,7 @@ export default {
 </script>
 
 <template>
-    a
-    <CustomBreadcrumb :items="[{to:'/ahoy'}]"/>
-    a
+    
     <div class="w-2/4 mb-10 min-w-[280px] flex items-center content-center justify-center">
         <div class="bg-[#ffffff] pb-2 w-full h-3/5 justify-around flex flex-col items-center rounded-3xl">
             <div class="text-xl p-2">
