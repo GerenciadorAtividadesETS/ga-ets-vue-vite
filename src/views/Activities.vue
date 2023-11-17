@@ -85,7 +85,6 @@ export default {
 
 <template>
     <div class="content-end flex flex-col justify-center w-[75rem] px-14">
-
         <h1 
         class="flex flex-col-reverse sm:flex-row justify-between items-center mb-5 text-4xl font-semibold text-end">
 

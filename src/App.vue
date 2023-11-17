@@ -4,14 +4,17 @@ import TheHeader from './components/TheHeader.vue';
 // import ChildComp from './ChildComp.vue'
 import { User } from './components/type'
 export default {
+  setup(){
+    
+  },
   data(){
     return{
-      isUserLogged: false,
+      isUserLogged: true,
       user: {
             edv:"12312312",
-            name:"Gustavinho",
+            name:"Gustavinho inho",
             color:"27AAAF",
-            class: 5,
+            class: 0,
         } as User
     }
   },
@@ -29,11 +32,11 @@ export default {
 
 <template>
   <div class="h-fit min-h-screen overflow-x-hidden flex flex-col  bg-slate-300">
-    <TheHeader :is-logged="isUserLogged" :user="user" ></TheHeader>
+    <TheHeader :is-logged="this.isUserLogged" :user="this.user" ></TheHeader>
     
     <div class="flex justify-center flex-1 ">
       <!-- <button :onclick="login">login</button> -->
-      <router-view></router-view>
+      <router-view :user="this.user"></router-view>
     </div>
     <!-- <HelloWorld msg="Vite + Vue" /> -->
   </div>

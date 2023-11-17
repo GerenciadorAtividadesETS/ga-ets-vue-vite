@@ -17,10 +17,9 @@ export default {
     },
     data() {
         return {
-            mouseup: false,
             _info: this.info,
+            mouseup: false,
             back: cloneDeep(this.info),
-            // fazer uma função pra retornar ao pai o _info
         }
     },
     emits: ['return-info', 'cancel-changes'],

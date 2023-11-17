@@ -17,9 +17,11 @@ export default {
     props: {
         text: { default: "text", type: String },
         action: { default: () => { }, type: Function },
+        secondaryAction: Function,
+        secondaryButtonName: { default: "back", type: String },
         fields: Array as () => FieldsForm.Field[],
-        buttonName: { default : "submit", type: String},
-        buttonClass: {default: "m-2 py-1 px-4 bg-slate-300 rounded-full", type: String}
+        buttonName: { default: "submit", type: String },
+        buttonClass: { default: "m-2 py-2 px-6 bg-slate-300 rounded-lg", type: String }
     },
     methods: {
         onInput(e: Event, id: number) {
@@ -69,8 +71,11 @@ export default {
         </div>
         <div class="w-full flex justify-center">
             <!-- @:click.prevent="onSubmit($event)"  -->
+            <button v-if="secondaryAction != undefined" @:click.prevent="secondaryAction" :class="buttonClass">
+                {{ secondaryButtonName }}
+            </button>
             <button @:click.prevent="onSubmit" :class="buttonClass">
-                {{buttonName}}
+                {{ buttonName }}
             </button>
         </div>
 

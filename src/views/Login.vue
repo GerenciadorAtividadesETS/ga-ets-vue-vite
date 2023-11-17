@@ -1,20 +1,24 @@
 <script lang="ts">
 import axios from "axios";
 import FormGenerator from "../components/FormGenerator.vue"
-import FormFields, { Field } from '../components/type'
+import FormFields, { Field, User } from '../components/type'
 import { defineComponent, ref } from "vue";
 import ColorPicker from 'primevue/colorpicker';
 import Breadcrumb from "primevue/breadcrumb";
 import CustomBreadcrumb from "../components/CustomBreadcrumb.vue";
 import { MenuItem } from "primevue/menuitem";
-
+import GaeAPI from "../apis/gaeAPI";
 
 export default {
+    props: {
+        user: {} as () => User
+    },
     data() {
         return {
+            _user: this.user,
             buttonName: "entrar",
             buttonClass: "m-2 py-1 px-4 bg-slate-300 rounded-full",
-            
+
             fields: [
                 {
                     name: "EDV",
@@ -37,6 +41,7 @@ export default {
         }
     },
     methods: {
+
         OnFocus(e) {
             if (e.type == 'mousedown') {
                 this.isChangingColor = true
@@ -70,34 +75,63 @@ export default {
             }
         },
         apiCallTest() {
-            axios.get("https://viacep.com.br/ws/01001000/json/")
+            GaeAPI.get("")
                 .then((res) => {
+                    this.$cookie.set("USER_TOKEN", res.data)
                     // console.log(res.data)
                 })
         },
+        teste() {
+            console.log("aa");
+            this.$cookie.set("USER_TOKEN", "res.data")
+            // this.user = {
+            //     edv: "14234",
+            //     name: "Livia",
+            //     color: "2700AF",
+            //     class: 5,
+            // } as User
+        },
+        teste2() {
+            console.log("aa");
+            console.log(
+                this.$cookie.get("USER_TOKEN"))
+            // this.user = {
+            //     edv: "14234",
+            //     name: "Livia",
+            //     color: "2700AF",
+            //     class: 5,
+            // } as User
+        },
     },
     components: {
-    FormGenerator,
-    ColorPicker,
-    Breadcrumb,
-    CustomBreadcrumb
-}
+        FormGenerator,
+        ColorPicker,
+        Breadcrumb,
+        CustomBreadcrumb
+    }
 }
 
 </script>
 
 <template>
-    
-    <div class="w-2/4 mb-10 min-w-[280px] flex items-center content-center justify-center">
-        <div class="bg-[#ffffff] pb-2 w-full h-3/5 justify-around flex flex-col items-center rounded-3xl">
-            <div class="text-xl p-2">
-                Entrar
+    <div class="w-2/4 mb-10 min-w-[280px] flex justify-center">
+        <div class="bg-[#ffffff] mt-10 pb-2 w-fit px-16 h-fit flex flex-col justify-between items-center rounded-3xl">
+
+            <div class="flex flex-col items-center">
+
+                <div class="text-xl py-10">
+                    Entrar
+                </div>
+
+                <div class="w-2/4 min-w-[260px]">
+                    <FormGenerator :buttonName="buttonName" :action="apiCallTest"
+                        :fields="fields" />
+                </div>
             </div>
-            <div class="w-2/4 min-w-[260px]">
-                <FormGenerator :buttonName="buttonName" :buttonClass="buttonClass" :action="apiCallTest" :fields="fields" />
-            </div>
+
             <!-- {{ getFieldValueByName("EDV") }} -->
-            <h1 class="text-sm flex">
+            <div class=" h-5 "></div>
+            <h1 class="text-sm flex py-4">
                 Não tenho uma conta
                 <router-link class="ml-1 text-green-600" to="/register">Registrar</router-link>
 

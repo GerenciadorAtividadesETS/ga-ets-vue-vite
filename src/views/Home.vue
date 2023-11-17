@@ -1,10 +1,12 @@
 <template>
-    <div class="content-end flex flex-col justify-center w-[75rem] px-14">
-        <div class="h-full flex-col items-center p-10 justify-evenly min-w-[272px] flex w-full bg-white">
-            <h1 class="text-3xl h-10">
-                Seja Bem-Vindo ao Gendenciador de Atividades da ETS
-            </h1>
-            <div class="h-full flex-col justify-evenly flex w-full bg-white">
+<div class="content-end flex flex-col justify-center w-[75rem] px-14">
+        <h2 
+        class="flex flex-col-reverse sm:flex-row justify-between items-center my-7 text-3xl font-semibold text-end">
+       <!-- <h1 class="text-3xl h-10 my-10 text-center items-center flex"> -->
+            Seja Bem-Vindo ao Gendenciador de Atividades da ETS
+        </h2>
+        <div class="h-full flex-col items-center p-10 justify-evenly min-w-[280px] flex w-full bg-white">
+            <div class="h-full flex-col justify-evenly flex w-full">
                 <h2>
                     O que é GA-ETS?
                 </h2>

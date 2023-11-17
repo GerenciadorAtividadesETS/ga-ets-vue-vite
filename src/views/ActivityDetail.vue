@@ -65,7 +65,7 @@ export default {
         <div 
         class="flex flex-row mb-5 text-4xl font-semibold text-end items-center">
             <div class="min-h-[2.5rem] max-h-[2.5rem] max-w-[2.5rem] min-w-[2.5rem] rounded-2xl mr-2" :style="{ backgroundColor: ` #${activity.color}` }"></div>
-            <h1 class="text-2xl font-semibold"> {{ activity.title }}</h1>
+            <h1 class="text-2xl py-8 font-semibold"> {{ activity.title }}</h1>
         </div>
         <div
             class="p-2 gap-2 justify-between flex-col drop-shadow-md flex mb-0 bg-white px-5">

@@ -62,9 +62,12 @@ export default {
 <template>
     <div class="flex flex-col w-full">
         {{ field?.name }}
-        <input :required="field?.required" :type="field?.type" :placeholder="field?.placeholder ?? field?.name"
-            class="border w-full p-2 h-8 rounded-md" @input="this.onInput($event)">
+        <input :maxlength="field?.max?? 255" :required="field?.required" :type="this.field?.type == 'number'? 'text': this.field?.type" :placeholder="field?.placeholder ?? field?.name"
+            :value="field?.value" class="border w-full p-2 h-8 rounded-md focus:outline-none focus:border-black" @input="this.onInput($event)">
         <!-- v-model == @input="onInput($event, index)" -->
     </div>
-    <div v-if="field?.error != ''" class="text-sm text-red-600">{{ field?.error ? "*" + field?.error : "" }}</div>
+    <div class="h-8">
+
+        <div v-if="field?.error != ''" class="text-sm text-red-600">{{ field?.error ? "*" + field?.error : "" }}</div>
+    </div>
 </template>

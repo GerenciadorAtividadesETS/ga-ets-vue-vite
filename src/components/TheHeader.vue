@@ -4,6 +4,8 @@ import { User } from './type';
 import Breadcrumb from 'primevue/breadcrumb';
 import { useRoute } from 'vue-router';
 import { capitalize } from 'vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { Icon } from '@iconify/vue';
 
 export default {
   setup() {
@@ -14,8 +16,14 @@ export default {
 
     }
   },
+  props: {
+    user: {} as () => User,
+    isLogged: { default: false, type: Boolean },
+  },
   data() {
     return {
+      _user: this.user,
+      _isLogged: this.isLogged,
       home: {
         label: 'pi pi-home',
         to: '/',
@@ -25,19 +33,28 @@ export default {
         { label: 'Notebook', },
       ] as MenuItem[],
       rota: "",
-      caminho: ""
+      caminho: "",
+      hideShow: false,
+
     };
   },
-  props: {
-    isLogged: { default: false, type: Boolean },
-    user: {} as () => User
-  },
   components: {
-    Breadcrumb
+    Breadcrumb,
+    FontAwesomeIcon,
+    Icon
   },
   methods: {
     capitalize(s: string) {
       return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+    },
+    logout() {
+      this._user = undefined;
+      this._isLogged = false
+      this.hideShow = false
+      this.$router.push({ path: '/' })
+    },
+    changeHideShow() {
+      this.hideShow = !this.hideShow
     },
     metodo() {
       console.log("mudou");
@@ -66,10 +83,11 @@ export default {
           if (this.caminho.split('/')[i].startsWith(":")) {
             item = { label: capitalize(this.caminho.split('/')[i].slice(1)), to: stack + r }
           } else {
-            // item = { label: capitalize(r), to: stack + r }
-            item = { label: "um nome nem tão pequeno apenas para exemplificar", to: stack + r }
+            item = { label: capitalize(r), to: stack + r }
+            // item = { label: "um nome nem tão pequeno apenas para exemplificar", to: stack + r }
           }
         }
+
         rotas.push(item)
       });
       console.log("xx");
@@ -101,13 +119,43 @@ export default {
 
       </router-link>
       <div class="w-full flex max-w-[240px] text-xl justify-between items-center">
-        <router-link v-if="isLogged" class="m-2" to="/subjects">Matérias</router-link>
+        <router-link v-if="_isLogged" class="m-2" to="/subjects">Matérias</router-link>
         <router-link class="m-2" to="/subjects">staticM</router-link>
       </div>
       <div class="w-full pr-5 flex text-xl justify-end items-center">
-        <router-link to="/login">
-          <div :style="{ backgroundColor: `#${user?.color ?? '000000'}` }" class="h-12 w-12 rounded-full"></div>
-        </router-link>
+        <FontAwesomeIcon icon=""></FontAwesomeIcon>
+        <button :onclick="changeHideShow" class="h-[3.30rem] w-[3.30rem] -mr-1 absolute  rounded-full z-50 overflow-hidden flex">
+        </button>
+          <div class="absolute " v-if="_isLogged">
+              <div class="bg-white h-4 w-4 rounded-full absolute -ml-6 mt-1"></div>
+              <Icon class="absolute -ml-[1.80rem] -mt-[0.20rem]" :color="'#fff'" height="30" width="30" icon="material-symbols:verified" />
+              <Icon class="absolute -ml-[1.65rem] " :color="`#${_user?.color ?? '000000'}`" height="25"
+              width="25" icon="material-symbols:verified" />
+            </div>
+            <Icon class="" :color="`#${_user?.color ?? '000000'}`" height="50" width="50"
+            icon="ph:user-circle-gear-duotone" />
+
+        <div :onmouseleave="() => this.hideShow = false" class=" pr-5 right-0  absolute top-14 p-2">
+          <div v-if="hideShow && !_isLogged" class="bg-white p-2 rounded-2xl rounded-se">
+            <router-link :onclick="() => this.hideShow = false" class="hover:bg-gray-300 w-full flex px-1 rounded"
+              to="/login">
+              Login
+            </router-link>
+            <hr class="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700">
+            <router-link :onclick="() => this.hideShow = false" class="hover:bg-gray-300 w-full flex px-1 rounded"
+              to="/register">
+              Registrar
+            </router-link>
+          </div>
+          <div v-else-if="hideShow" class="bg-white p-2 rounded-2xl rounded-se">
+            <p>Nome: {{ _user?.name.split(" ")[0] }}</p>
+            <hr class="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700">
+            <p>Turma: {{ _user?.class }}</p>
+            <hr class="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700">
+            <button class="hover:bg-gray-300 w-full flex px-1 rounded" :onclick="logout">Sair</button>
+          </div>
+        </div>
+
       </div>
     </div>
   </header>
@@ -115,13 +163,13 @@ export default {
     <div class="w-[75rem] py-2 px-14">
       <div class="flex-wrap min-w-[280px] w-full">
         <Breadcrumb :model="items" class="h-fit w-fit text-xs flex flex-wrap sm:text-base" :pt="{
-          root: { class: 'p-3 rounded-md bg-white' },
+          root: { class: 'p-3 pl-5 pr-0 rounded-md bg-white' },
           // root: ({}) =>{ },
           menu: { class: 'flex flex-wrap break-words truncate' },
           menuitem: { class: 'truncate sm:h-5 flex items-center max-w-[10rem] sm:max-w-[15rem] h-4 pr-5' },
-          label: { class: 'truncate flex flex-none h-4 sm:h-5'},
-          separator: { class: '-ml-4'},
-          action: {class: 'truncate sm:h-5'}
+          label: { class: 'truncate flex flex-none h-4 sm:h-5' },
+          separator: { class: '-ml-5' },
+          action: { class: 'truncate sm:h-5' }
 
         }" />
         <!-- <Breadcrumb :model="[

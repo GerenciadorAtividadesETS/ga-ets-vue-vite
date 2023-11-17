@@ -1,13 +1,13 @@
 
 export type User = {
     edv: string,
-    name: stiring,
+    name: string,
     color: string,
     class: number
 }
 
 export type Field = {
-    name: string
+    name?: string
     value: string,
     placeholder?: string,
     type?: string,
