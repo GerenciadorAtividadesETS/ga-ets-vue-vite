@@ -10,6 +10,8 @@ export default {
     data() {
         return {
             color: "ff0000",
+            color2: "ff0000",
+            inputFocus: false,
             formProgress: 0,
             nameFields: [
                 {
@@ -90,6 +92,7 @@ export default {
                 })
         },
 
+
     },
     components: {
         FormGenerator,
@@ -114,14 +117,14 @@ export default {
 
                         Select a profile color
                         <!-- <div class="h-16 w-16 " :style="{ backgroundColor: `#${color}` }"></div> -->
-                        
-                        <div class="border pointer-events-none focus:border-black flex items-center w-full mb-7 bg-white rounded-lg p-px px-0">
-                            <ColorPicker v-model="color" inputId="cp-hex" format="hex" :pt="{
+
+                        <div class="absolute mt-1">
+                            <ColorPicker class="" v-model="color" inputId="cp-hex" format="hex" :pt="{
                                 root: ({ props }) => ({
                                     class: [
-                                        'inline-block px-2',
+                                        'inline-block pl-2',
                                         {
-                                            'opacity-60 select-none pointer-events-none cursor-default': props.disabled
+                                            'opacity-60 select-none cursor-default': props.disabled
                                         }
                                     ]
                                 }),
@@ -164,10 +167,17 @@ export default {
                                         leaveToClass: 'opacity-0'
                                     }
                                 }.overlay
-                            }" 
-                             />#<input class="focus:outline-none pointer-events-auto" type="text" v-model="color">
+                            }" />
+                            
+                                #
+                            
                         </div>
-                        <div class="">
+                        <!-- <CustomInput :field="{value:color}"></CustomInput> -->
+                        <input :style="{ borderColor: inputFocus ? 'black' : '' }"
+                            class="border flex w-full p-2 h-10 pl-14 py-2 rounded-md focus:outline-none focus:border-black"
+                            type="text" v-model="color">
+                            <div class="h-6"></div>
+                            <div class="">
 
 
                             <FormGenerator buttonName="proximo" :action="() => { formProgress++ }"

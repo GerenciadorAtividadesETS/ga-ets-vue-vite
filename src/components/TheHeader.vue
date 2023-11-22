@@ -163,7 +163,7 @@ export default {
     <div class="w-[75rem] py-2 px-14">
       <div class="flex-wrap min-w-[280px] w-full">
         <Breadcrumb :model="items" class="h-fit w-fit text-xs flex flex-wrap sm:text-base" :pt="{
-          root: { class: 'p-3 pl-5 pr-0 rounded-md bg-white' },
+          root: { class: 'p-3 pb-2 pl-5 pr-0 rounded-md bg-white' },
           // root: ({}) =>{ },
           menu: { class: 'flex flex-wrap break-words truncate' },
           menuitem: { class: 'truncate sm:h-5 flex items-center max-w-[10rem] sm:max-w-[15rem] h-4 pr-5' },
