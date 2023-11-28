@@ -10,7 +10,7 @@ import GaeAPI from '../apis/gaeAPI'
 export default {
     data() {
         return {
-            color: "ff005e",
+            color: "ff0000",
             color2: "ff0000",
             inputFocus: false,
             formProgress: 0,
@@ -20,7 +20,7 @@ export default {
                     placeholder: "Insira seu nome completo",
                     required: true,
                     type: "text",
-                    value: "Livia Padovyne",
+                    value: "",
                     max: 100
                 },
             ] as Field[],
@@ -30,7 +30,7 @@ export default {
                     placeholder: "Insira seu edv",
                     required: true,
                     type: "number",
-                    value: "92900295",
+                    value: "",
                     min: 8,
                     max: 8,
                 },
@@ -39,7 +39,7 @@ export default {
                     placeholder: "Insira sua turma",
                     required: true,
                     type: "number",
-                    value: "5",
+                    value: "",
                     specificValidator: this.greaterThanZero,
                     max: 10
                 },
@@ -50,7 +50,7 @@ export default {
                     placeholder: "Insira sua senha",
                     required: true,
                     type: "password",
-                    value: "Senha123",
+                    value: "",
                     min: 6,
 
                 },
@@ -59,7 +59,7 @@ export default {
                     placeholder: "Confirme sua senha",
                     required: true,
                     type: "password",
-                    value: "Senha123",
+                    value: "",
                     specificValidator: this.isSamePassword
                 }
             ] as Field[]
@@ -215,7 +215,6 @@ export default {
                     <div class="w-full flex justify-end text-sm text-gray-500">
                         {{ formProgress + 1 }}/3
                     </div>
-                    <button :onclick="registerAccount" class="bg-red-500 p-5 rounded text-white font-semibold">ENVIAR</button>
                 </div>
             </div>
             <!-- {{ getFieldValueByName("EDV") }} -->
