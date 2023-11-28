@@ -35,7 +35,7 @@ export default {
                     required: true,
                     type: "password",
                     value: "",
-                    min: 6,
+
                 },
             ] as Field[]
         }
@@ -74,10 +74,13 @@ export default {
                 return undefined
             }
         },
-        apiCallTest() {
-            GaeAPI.get("")
+        loginAccount() {
+            GaeAPI.post("/login", {
+                "edv": "92900290",
+                "senha": "admin"
+            })
                 .then((res) => {
-                    this.$cookie.set("USER_TOKEN", res.data)
+                    // this.$cookie.set("USER_TOKEN", res.data)
                     // console.log(res.data)
                 })
         },
@@ -124,8 +127,7 @@ export default {
                 </div>
 
                 <div class="w-2/4 min-w-[260px]">
-                    <FormGenerator :buttonName="buttonName" :action="apiCallTest"
-                        :fields="fields" />
+                    <FormGenerator :buttonName="buttonName" :action="loginAccount" :fields="fields" />
                 </div>
             </div>
 

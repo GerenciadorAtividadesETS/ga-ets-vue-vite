@@ -3,7 +3,7 @@
         <h2 
         class="flex flex-col-reverse sm:flex-row justify-between items-center my-7 text-3xl font-semibold text-end">
        <!-- <h1 class="text-3xl h-10 my-10 text-center items-center flex"> -->
-            Seja Bem-Vindo ao Gendenciador de Atividades da ETS
+            Seja Bem-Vindo ao Gerenciador de Atividades da ETS
         </h2>
         <div class="h-full flex-col items-center p-10 justify-evenly min-w-[280px] flex w-full bg-white">
             <div class="h-full flex-col justify-evenly flex w-full">

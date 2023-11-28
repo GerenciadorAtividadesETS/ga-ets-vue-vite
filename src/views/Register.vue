@@ -5,11 +5,12 @@ import FormFields, { Field } from '../components/type'
 import { defineComponent, ref } from "vue";
 import ColorPicker from 'primevue/colorpicker';
 import CustomInput from "../components/CustomInput.vue";
+import GaeAPI from '../apis/gaeAPI'
 
 export default {
     data() {
         return {
-            color: "ff0000",
+            color: "ff005e",
             color2: "ff0000",
             inputFocus: false,
             formProgress: 0,
@@ -19,7 +20,7 @@ export default {
                     placeholder: "Insira seu nome completo",
                     required: true,
                     type: "text",
-                    value: "",
+                    value: "Livia Padovyne",
                     max: 100
                 },
             ] as Field[],
@@ -29,7 +30,7 @@ export default {
                     placeholder: "Insira seu edv",
                     required: true,
                     type: "number",
-                    value: "",
+                    value: "92900295",
                     min: 8,
                     max: 8,
                 },
@@ -38,7 +39,8 @@ export default {
                     placeholder: "Insira sua turma",
                     required: true,
                     type: "number",
-                    value: "",
+                    value: "5",
+                    specificValidator: this.greaterThanZero,
                     max: 10
                 },
             ] as Field[],
@@ -48,7 +50,7 @@ export default {
                     placeholder: "Insira sua senha",
                     required: true,
                     type: "password",
-                    value: "",
+                    value: "Senha123",
                     min: 6,
 
                 },
@@ -57,7 +59,7 @@ export default {
                     placeholder: "Confirme sua senha",
                     required: true,
                     type: "password",
-                    value: "",
+                    value: "Senha123",
                     specificValidator: this.isSamePassword
                 }
             ] as Field[]
@@ -70,6 +72,11 @@ export default {
                 if (element.name == name) {
                     return element.value
                 }
+            }
+        },
+        greaterThanZero() {
+            if (this.getFieldValueByName("Turma", this.basicFields) == 0) {
+                return "Turma Inválida"
             }
         },
         isSamePassword() {
@@ -85,10 +92,25 @@ export default {
                 return undefined
             }
         },
-        apiCallTest() {
-            axios.get("https://viacep.com.br/ws/01001000/json/")
+        registerAccount() {
+            console.log("Iniciou");
+            
+            GaeAPI.post("/usuarios",
+                {
+                    // "turma": this.getFieldValueByName("Turma", this.basicFields).valueOf(),
+                    "turma": 13,
+                    "edv": this.getFieldValueByName("EDV", this.basicFields),
+                    "nome": this.getFieldValueByName("Nome", this.nameFields),
+                    "senha": this.getFieldValueByName("Senha", this.passwordFields),
+                    "cor": this.color.toUpperCase()
+                }
+                )
                 .then((res) => {
                     console.log(res.data)
+                    alert(JSON.stringify(res.data))
+                })
+                .catch((res)=>{
+                    alert(JSON.stringify(res))
                 })
         },
 
@@ -107,6 +129,7 @@ export default {
     <div class="w-2/4 mb-10 min-w-[280px] flex justify-center">
         <div class="bg-[#ffffff] mt-10 pb-2 w-fit px-16 h-fit flex flex-col justify-between items-center rounded-3xl">
             <div class="text-xl py-10">
+                {{ "" }}
                 Registrar
             </div>
             <div class="flex flex-col items-center">
@@ -118,7 +141,7 @@ export default {
                         Select a profile color
                         <!-- <div class="h-16 w-16 " :style="{ backgroundColor: `#${color}` }"></div> -->
 
-                        <div class="absolute mt-1">
+                        <div class="absolute mt-1 select-none text-gray-400">
                             <ColorPicker class="" v-model="color" inputId="cp-hex" format="hex" :pt="{
                                 root: ({ props }) => ({
                                     class: [
@@ -168,16 +191,16 @@ export default {
                                     }
                                 }.overlay
                             }" />
-                            
-                                #
-                            
+
+                            #
+
                         </div>
                         <!-- <CustomInput :field="{value:color}"></CustomInput> -->
                         <input :style="{ borderColor: inputFocus ? 'black' : '' }"
                             class="border flex w-full p-2 h-10 pl-14 py-2 rounded-md focus:outline-none focus:border-black"
                             type="text" v-model="color">
-                            <div class="h-6"></div>
-                            <div class="">
+                        <div class="h-6"></div>
+                        <div class="">
 
 
                             <FormGenerator buttonName="proximo" :action="() => { formProgress++ }"
@@ -187,11 +210,12 @@ export default {
                     <FormGenerator v-else-if="this.formProgress == 1" buttonName="proximo"
                         :secondary-action="() => formProgress--" :action="() => { formProgress++ }"
                         :fields="this.basicFields" />
-                    <FormGenerator v-else-if="this.formProgress == 2" buttonName="registrar" :action="apiCallTest"
+                    <FormGenerator v-else-if="this.formProgress == 2" buttonName="registrar" :action="registerAccount"
                         :fields="this.passwordFields" :secondary-action="() => formProgress--" />
                     <div class="w-full flex justify-end text-sm text-gray-500">
                         {{ formProgress + 1 }}/3
                     </div>
+                    <button :onclick="registerAccount" class="bg-red-500 p-5 rounded text-white font-semibold">ENVIAR</button>
                 </div>
             </div>
             <!-- {{ getFieldValueByName("EDV") }} -->

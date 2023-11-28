@@ -1,6 +1,9 @@
 import axios from 'axios';
 const GaeAPI = axios.create({
-    baseURL: ''
+    baseURL: 'http://localhost:8080',
+    headers: {
+      "Content-type": "application/json"
+    }
 })
 
 export default GaeAPI;

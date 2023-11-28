@@ -69,13 +69,13 @@ export default {
         <div class="w-full" v-for="(field, index) in fields" :key="index">
             <CustomInput @validate-input="inputValidation" :field="field" ref="inputs" />
         </div>
-        <div class="w-full flex justify-center">
+        <div class="w-full flex justify-center flex-row-reverse">
             <!-- @:click.prevent="onSubmit($event)"  -->
-            <button v-if="secondaryAction != undefined" @:click.prevent="secondaryAction" :class="buttonClass">
-                {{ secondaryButtonName }}
-            </button>
             <button @:click.prevent="onSubmit" :class="buttonClass">
                 {{ buttonName }}
+            </button>
+            <button v-if="secondaryAction != undefined" @:click.prevent="secondaryAction" :class="buttonClass">
+                {{ secondaryButtonName }}
             </button>
         </div>
 

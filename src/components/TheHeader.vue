@@ -120,7 +120,8 @@ export default {
       </router-link>
       <div class="w-full flex max-w-[240px] text-xl justify-between items-center">
         <router-link v-if="_isLogged" class="m-2" to="/subjects">Matérias</router-link>
-        <router-link class="m-2" to="/subjects">staticM</router-link>
+        <router-link v-if="_isLogged&&_user?.class==0" class="m-2" to="/instructor">Instrutor</router-link>
+        <!-- <router-link class="m-2" to="/subjects">staticM</router-link> -->
       </div>
       <div class="w-full pr-5 flex text-xl justify-end items-center">
         <FontAwesomeIcon icon=""></FontAwesomeIcon>
