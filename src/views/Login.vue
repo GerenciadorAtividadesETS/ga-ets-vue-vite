@@ -6,7 +6,6 @@ import { defineComponent, ref } from "vue";
 import ColorPicker from 'primevue/colorpicker';
 import Breadcrumb from "primevue/breadcrumb";
 import CustomBreadcrumb from "../components/CustomBreadcrumb.vue";
-import { MenuItem } from "primevue/menuitem";
 import GaeAPI from "../apis/gaeAPI";
 
 export default {
