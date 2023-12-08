@@ -24,20 +24,14 @@ export default {
     TheHeader
   },
   methods: {
-    login(){
-      this.$cookies.set("a", "b")
-      console.log(this.$cookies.get("a"));
-      
-      // this.isUserLogged = !this.isUserLogged
-    }
-  }
+  },
+  
 }
 </script>
 
 <template>
   <div class="h-fit min-h-screen overflow-x-hidden flex flex-col  bg-slate-200">
-    <TheHeader :is-logged="this.isUserLogged" :user="this.user" ></TheHeader>
-    <button :onclick="login">login</button>
+    <TheHeader ></TheHeader>
     <div class="flex justify-center flex-1 ">
       <!-- <button :onclick="login">login</button> -->
       <router-view :user="this.user"></router-view>

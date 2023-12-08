@@ -7,6 +7,7 @@ import ColorPicker from 'primevue/colorpicker';
 import Breadcrumb from "primevue/breadcrumb";
 import CustomBreadcrumb from "../components/CustomBreadcrumb.vue";
 import GaeAPI from "../apis/gaeAPI";
+import VueCookies from 'vue-cookies'
 
 export default {
     props: {
@@ -24,7 +25,7 @@ export default {
                     placeholder: "Insira seu edv",
                     required: true,
                     type: "number",
-                    value: "1",
+                    value: "",
                     max: 8,
                 },
                 {
@@ -32,7 +33,7 @@ export default {
                     placeholder: "Insira sua senha",
                     required: true,
                     type: "password",
-                    value: "1",
+                    value: "",
 
                 },
             ] as Field[]
@@ -68,10 +69,11 @@ export default {
             )
                 .then((res) => {
                     console.log(res.data);
-                    this.$cookie.set("USER_TOKEN", "res.data.tokenJWT")
+                    this.$cookies.set("USER_TOKEN", res.data.tokenJWT)
                     console.log(
-                        this.$cookie.keys()
+                        this.$cookies.keys()
                     )
+                    this.$router.push({ path: '/' })
                 })
                 .catch((error) => {
                     console.log(error.response);
@@ -85,27 +87,6 @@ export default {
             //         // this.$cookie.set("USER_TOKEN", res.data)
             //         // console.log(res.data)
             //     })
-        },
-        teste() {
-            console.log("aa");
-            this.$cookie.set("USER_TOKEN", "res.data")
-            // this.user = {
-            //     edv: "14234",
-            //     name: "Livia",
-            //     color: "2700AF",
-            //     class: 5,
-            // } as User
-        },
-        teste2() {
-            console.log("aa");
-            console.log(
-                this.$cookie.get("USER_TOKEN"))
-            // this.user = {
-            //     edv: "14234",
-            //     name: "Livia",
-            //     color: "2700AF",
-            //     class: 5,
-            // } as User
         },
     },
     components: {
@@ -129,8 +110,7 @@ export default {
                 </div>
 
                 <div class="w-2/4 min-w-[260px]">
-                    <FormGenerator :buttonName="buttonName" :action="teste" :fields="fields" />
-                    <FormGenerator :buttonName="buttonName" :action="teste2" :fields="fields" />
+                    <FormGenerator :buttonName="buttonName" :action="loginAccount" :fields="fields" />
                 </div>
             </div>
 

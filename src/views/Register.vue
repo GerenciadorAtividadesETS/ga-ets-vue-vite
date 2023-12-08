@@ -107,11 +107,11 @@ export default {
                 )
                 .then((res) => {
                     console.log(res.data)
-                    this.$cookie.set
-                    alert(JSON.stringify(res.data))
+                    alert("Sua conta foi criada com sucesso!")
+                    this.$router.push({ path:"/login" })
                 })
-                .catch((res)=>{
-                    alert(JSON.stringify(res))
+                .catch((error)=>{
+                    alert(error.response.data)
                 })
         },
 

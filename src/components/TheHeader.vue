@@ -6,6 +6,7 @@ import { useRoute } from 'vue-router';
 import { capitalize } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { Icon } from '@iconify/vue';
+import isLoggedMixin from '../service/userSession';
 
 export default {
   setup() {
@@ -17,13 +18,11 @@ export default {
     }
   },
   props: {
-    user: {} as () => User,
-    isLogged: { default: false, type: Boolean },
+    // user: {} as () => User,
   },
   data() {
     return {
-      _user: this.user,
-      _isLogged: this.isLogged,
+      user: {} as User,
       home: {
         label: 'pi pi-home',
         to: '/',
@@ -48,15 +47,23 @@ export default {
       return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
     },
     logout() {
-      this._user = undefined;
-      this._isLogged = false
+      this.user = {} as User;
       this.hideShow = false
+      this.$cookies.remove("USER_TOKEN")
       this.$router.push({ path: '/' })
     },
     changeHideShow() {
       this.hideShow = !this.hideShow
     },
     metodo() {
+      this.checkIfLogged()
+            .then(response => {
+                console.log(response);
+                this.user = response ? response : false;
+
+            })
+            .catch(error => console.log(error));
+
       console.log("mudou");
       this.rota = this.route?.path
       this.caminho = this.route?.matched[0]?.path
@@ -103,7 +110,11 @@ export default {
     '$route': {
       handler: 'metodo'
     }
-  }
+  },
+  mixins:[
+    isLoggedMixin
+  ]
+
 
 
 }
@@ -119,25 +130,24 @@ export default {
 
       </router-link>
       <div class="w-full flex max-w-[240px] text-xl justify-between items-center">
-        <router-link v-if="_isLogged" class="m-2" to="/subjects">Matérias</router-link>
-        <router-link v-if="_isLogged&&_user?.turma==0" class="m-2" to="/instructor">Instrutor</router-link>
+        <router-link v-if="user?.edv" class="m-2" to="/subjects">Matérias</router-link>
+        <router-link v-if="user?.turma==0" class="m-2" to="/instructor">Instrutor</router-link>
         <!-- <router-link class="m-2" to="/subjects">staticM</router-link> -->
       </div>
       <div class="w-full pr-5 flex text-xl justify-end items-center">
-        <FontAwesomeIcon icon=""></FontAwesomeIcon>
         <button :onclick="changeHideShow" class="h-[3.30rem] w-[3.30rem] -mr-1 absolute  rounded-full z-50 overflow-hidden flex">
         </button>
-          <div class="absolute " v-if="_isLogged">
+          <div class="absolute " v-if="user?.edv">
               <div class="bg-white h-4 w-4 rounded-full absolute -ml-6 mt-1"></div>
               <Icon class="absolute -ml-[1.80rem] -mt-[0.20rem]" :color="'#fff'" height="30" width="30" icon="material-symbols:verified" />
-              <Icon class="absolute -ml-[1.65rem] " :color="`#${_user?.cor ?? '000000'}`" height="25"
+              <Icon class="absolute -ml-[1.65rem] " :color="`#${user?.cor ?? '000000'}`" height="25"
               width="25" icon="material-symbols:verified" />
             </div>
-            <Icon class="" :color="`#${_user?.cor ?? '000000'}`" height="50" width="50"
+            <Icon class="" :color="`#${user?.cor ?? '000000'}`" height="50" width="50"
             icon="ph:user-circle-gear-duotone" />
 
         <div :onmouseleave="() => this.hideShow = false" class=" pr-5 right-0  absolute top-14 p-2">
-          <div v-if="hideShow && !_isLogged" class="bg-white p-2 rounded-2xl rounded-se">
+          <div v-if="hideShow && !user.edv" class="bg-white p-2 rounded-2xl rounded-se">
             <router-link :onclick="() => this.hideShow = false" class="hover:bg-gray-300 w-full flex px-1 rounded"
               to="/login">
               Login
@@ -149,9 +159,9 @@ export default {
             </router-link>
           </div>
           <div v-else-if="hideShow" class="bg-white p-2 rounded-2xl rounded-se">
-            <p>Nome: {{ _user?.nome.split(" ")[0] }}</p>
+            <p>Nome: {{ user?.nome.split(" ")[0] }}</p>
             <hr class="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700">
-            <p>Turma: {{ _user?.turma }}</p>
+            <p>Turma: {{ user?.turma }}</p>
             <hr class="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700">
             <button class="hover:bg-gray-300 w-full flex px-1 rounded" :onclick="logout">Sair</button>
           </div>

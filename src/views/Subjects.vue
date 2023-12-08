@@ -1,4 +1,5 @@
 <script lang="ts">
+import GaeAPI from '../apis/gaeAPI';
 import SubjectCard from '../components/SubjectCard.vue';
 import { Subject } from '../components/type';
 import isLoggedMixin from '../service/userSession';
@@ -14,7 +15,7 @@ export default {
                 },
                 {
                     id: 1,
-                    nome: "UM NOME BEM GRANDE PRA UMA MATERIA BEM CHATA",
+                    nome: "UM NOME BEM GRANDE DE UMA MATERIA",
                     cor: "000",
                     border: "ffa0a0"
                 },
@@ -25,13 +26,13 @@ export default {
                     border: "a0a0a0"
                 },
                 {
-                    id: 2,
+                    id: 3,
                     nome: "um nome nem tão pequeno apenas para exemplificar",
                     cor: "000",
                     border: "a0a0a0"
                 },
                 {
-                    id: 2,
+                    id: 4,
                     nome: "um nome nem tão pequeno apenas para exemplificar",
                     cor: "000",
                     border: "a0a0a0"
@@ -45,19 +46,21 @@ export default {
         }
     },
     mixins: [
-        isLoggedMixin
+        
     ],
     components: {
         SubjectCard
     },
     created() {
-        this.checkIfLogged()
-            .then(response => {
-                console.log(response);
-                this.user = response ? response : false;
-
-            })
-            .catch(error => console.log(error));
+        GaeAPI.get('/materias',{
+            headers: {
+                Authorization: this.$cookies.get('USER_TOKEN')
+            }
+        })
+        .then((res)=>{
+            console.log(res.data.content);
+            
+        })
     },
 
 }
