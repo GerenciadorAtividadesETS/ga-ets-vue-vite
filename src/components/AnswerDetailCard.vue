@@ -1,6 +1,6 @@
 <script lang="ts">
 import CustomTable from './CustomTable.vue';
-import { Activity, Answer } from './type';
+import { Answer } from './type';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';   // optional
@@ -16,9 +16,15 @@ export default {
     setup(props, ctx) {
         // retorno da api.then setar variavel 
         // console.log();
+        console.log(props.activityId);
 
         
-        var user = props.user
+        var user: User = {
+            edv: "12312312",
+            nome: "Gustavinho",
+            cor: "27AAAF",
+            turma: 5,
+        }
 
         var answer: Answer = {
             id: 0,
@@ -40,6 +46,17 @@ export default {
                         compartilhado: "GUSTAVO_MIGUEL_RONCADA_MEIRA\\TRILHA_DEV\\AULAS JAVA\\GAE",
                         github: "https://github.com/Honkato/Delivery",
                         comentario: ""
+                    }
+                }
+            )
+        GaeAPI.get("", { headers: { Authorization: tokenJWT } })
+            .then(
+                () => {
+                    user = {
+                        edv: "12312312",
+                        nome: "Gustavinho",
+                        cor: "27AAAF",
+                        turma: 5,
                     }
                 }
             )
@@ -68,7 +85,7 @@ export default {
             ],
             contents:
                 [
-                    { value: props.activity?.data_entrega?.toLocaleString() ?? "" },
+                    { value: props.data_entrega?.toLocaleString() ?? "" },
                     { value: answer?.data_alteracao?.toDateString() ?? "" },
                     { value: answer?.compartilhado ?? "-", function: () => { copy(); }, icon: "copy", editable: true },
                     { value: answer?.github ?? "-", editable: true },
@@ -85,14 +102,8 @@ export default {
     },
     props: {
         // answer: {} as () => Answer,
-        activity: {
-            type: {} as ()=> Activity,
-            required: true
-        },
-        user: {
-            type: {} as ()=> User,
-            required: true
-        },
+        activityId: String,
+        userId: String
     },
     data() {
         return {

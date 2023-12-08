@@ -9,9 +9,9 @@ export default {
         const alunos = [
             {
                 edv: "92900000",
-                class: 5,
-                color: "",
-                name: ""
+                turma: 5,
+                cor: "",
+                nome: ""
             }
         ] as User[]
         return {

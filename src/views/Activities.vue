@@ -13,44 +13,47 @@ export default {
         const subject =
             {
                 id: 0,
-                name: "default",
-                professor: "default",
-                border: "000",
-                color: "000"
+                nome: "default",
+                cor: "000",
+                border: "000"
             } as Subject
         const activities = [
             {
                 id: 0,
-                color:"ff0000",
-                title: "Cubo Magico Jogo da Velha",
-                description: "<div>exemplo</div>",
-                professor:"Gus Tavo",
-                createdDate: (new Date),
-                dueDate: (new Date)
+                cor:"ff0000",
+                titulo: "Cubo Magico Jogo da Velha",
+                descricao: "<div>exemplo</div>",
+                // usuario_id:"Gus Tavo",
+                usuario_id:"92900290",
+                data_criacao: (new Date),
+                data_entrega: (new Date)
             },
             {
                 id: 1,
-                title: "API SpringBoot",
-                color:"00ff00",
-                description: "<div>exemplo</div>",
-                professor:"Li Via",
-                createdDate: (new Date),
+                titulo: "API SpringBoot",
+                cor:"00ff00",
+                descricao: "<div>exemplo</div>",
+                usuario_id:"92900290",
+                data_criacao: (new Date),
+                // professor:"Li Via",
             },
             {
                 id: 2,
-                title: "Projeto Livre",
-                color:"0000ff",
-                description: "<div>exemplo</div>",
-                professor:"Leo Nardo",
-                createdDate: (new Date),
+                titulo: "Projeto Livre",
+                cor:"0000ff",
+                descricao: "<div>exemplo</div>",
+                usuario_id:"92900290",
+                data_criacao: (new Date),
+                // usuario_id:"Leo Nardo",
             },
             {
                 id: 3,
-                title: "Banco de dados",
-                color:"00ff00",
-                description: "<div>exemplo</div>",
-                professor:"Fran Cis",
-                createdDate: (new Date),
+                titulo: "Banco de dados",
+                cor:"00ff00",
+                descricao: "<div>exemplo</div>",
+                usuario_id:"92900290",
+                data_criacao: (new Date),
+                // professor:"Fran Cis",
             },
         ] as Activity[]
         const buscarAPI = () => {

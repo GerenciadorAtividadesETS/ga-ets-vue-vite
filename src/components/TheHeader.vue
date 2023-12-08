@@ -120,7 +120,7 @@ export default {
       </router-link>
       <div class="w-full flex max-w-[240px] text-xl justify-between items-center">
         <router-link v-if="_isLogged" class="m-2" to="/subjects">Matérias</router-link>
-        <router-link v-if="_isLogged&&_user?.class==0" class="m-2" to="/instructor">Instrutor</router-link>
+        <router-link v-if="_isLogged&&_user?.turma==0" class="m-2" to="/instructor">Instrutor</router-link>
         <!-- <router-link class="m-2" to="/subjects">staticM</router-link> -->
       </div>
       <div class="w-full pr-5 flex text-xl justify-end items-center">
@@ -130,10 +130,10 @@ export default {
           <div class="absolute " v-if="_isLogged">
               <div class="bg-white h-4 w-4 rounded-full absolute -ml-6 mt-1"></div>
               <Icon class="absolute -ml-[1.80rem] -mt-[0.20rem]" :color="'#fff'" height="30" width="30" icon="material-symbols:verified" />
-              <Icon class="absolute -ml-[1.65rem] " :color="`#${_user?.color ?? '000000'}`" height="25"
+              <Icon class="absolute -ml-[1.65rem] " :color="`#${_user?.cor ?? '000000'}`" height="25"
               width="25" icon="material-symbols:verified" />
             </div>
-            <Icon class="" :color="`#${_user?.color ?? '000000'}`" height="50" width="50"
+            <Icon class="" :color="`#${_user?.cor ?? '000000'}`" height="50" width="50"
             icon="ph:user-circle-gear-duotone" />
 
         <div :onmouseleave="() => this.hideShow = false" class=" pr-5 right-0  absolute top-14 p-2">
@@ -149,9 +149,9 @@ export default {
             </router-link>
           </div>
           <div v-else-if="hideShow" class="bg-white p-2 rounded-2xl rounded-se">
-            <p>Nome: {{ _user?.name.split(" ")[0] }}</p>
+            <p>Nome: {{ _user?.nome.split(" ")[0] }}</p>
             <hr class="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700">
-            <p>Turma: {{ _user?.class }}</p>
+            <p>Turma: {{ _user?.turma }}</p>
             <hr class="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700">
             <button class="hover:bg-gray-300 w-full flex px-1 rounded" :onclick="logout">Sair</button>
           </div>

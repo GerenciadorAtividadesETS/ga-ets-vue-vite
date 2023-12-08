@@ -24,8 +24,7 @@ export default {
                     placeholder: "Insira seu edv",
                     required: true,
                     type: "number",
-                    value: "",
-                    min: 8,
+                    value: "1",
                     max: 8,
                 },
                 {
@@ -33,7 +32,7 @@ export default {
                     placeholder: "Insira sua senha",
                     required: true,
                     type: "password",
-                    value: "",
+                    value: "1",
 
                 },
             ] as Field[]
@@ -60,28 +59,32 @@ export default {
                 }
             }
         },
-        isSamePassword() {
-            // console.log("--");
-
-            // console.log(this.getFieldValueByName("Confirmar Senha"));
-            // console.log(this.getFieldValueByName("Senha"));
-
-            if (this.getFieldValueByName("Senha") != this.getFieldValueByName("Confirmar Senha")) {
-                return "Senhas não sao iguais"
-            }
-            else {
-                return undefined
-            }
-        },
         loginAccount() {
-            GaeAPI.post("/login", {
-                "edv": "92900290",
-                "senha": "admin"
-            })
+            axios.post('http://localhost:8080/login',
+                {
+                    "edv": this.getFieldValueByName("EDV"),
+                    "senha": this.getFieldValueByName("Senha")
+                }
+            )
                 .then((res) => {
-                    // this.$cookie.set("USER_TOKEN", res.data)
-                    // console.log(res.data)
+                    console.log(res.data);
+                    this.$cookie.set("USER_TOKEN", "res.data.tokenJWT")
+                    console.log(
+                        this.$cookie.keys()
+                    )
                 })
+                .catch((error) => {
+                    console.log(error.response);
+
+                })
+            // GaeAPI.post("/login", {
+            //     "edv": "92900290",
+            //     "senha": "admin"
+            // })
+            //     .then((res) => {
+            //         // this.$cookie.set("USER_TOKEN", res.data)
+            //         // console.log(res.data)
+            //     })
         },
         teste() {
             console.log("aa");
@@ -126,7 +129,8 @@ export default {
                 </div>
 
                 <div class="w-2/4 min-w-[260px]">
-                    <FormGenerator :buttonName="buttonName" :action="loginAccount" :fields="fields" />
+                    <FormGenerator :buttonName="buttonName" :action="teste" :fields="fields" />
+                    <FormGenerator :buttonName="buttonName" :action="teste2" :fields="fields" />
                 </div>
             </div>
 

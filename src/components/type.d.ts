@@ -1,9 +1,9 @@
 
 export type User = {
     edv: string,
-    name: string,
-    color: string,
-    class: number
+    nome: string,
+    cor: string,
+    turma: number
 }
 
 export type Field = {
@@ -18,29 +18,33 @@ export type Field = {
     specificValidator?: ReturningString;
 }
 
+
+
 export type Subject = {
     id: number,
-    name: string ,
-    color: string,
+    nome: string ,
+    cor: string,
     border:  string,
 }
 
 export type Activity = {
     id: number,
-    professor: string,
-    title: string,
-    description: string,
-    createdDate: Date,
-    dueDate?: Date,
-    color: string,
+    usuario_id: string,
+    titulo: string,
+    descricao: string,
+    data_criacao: Date,
+    data_entrega?: Date,
+    cor: string,
 }
 
 export type Answer = {
     id: number,
-    lastChangeDate: Date,
-    compartilhadoLink?: string,
+    usuario_id: string,
+    data_alteracao: Date,
+    data_entrega?: Date,
+    compartilhado?: string,
     github?:string,
-    commit?: string
+    comentario?: string,
 }
 
 export type Table = {

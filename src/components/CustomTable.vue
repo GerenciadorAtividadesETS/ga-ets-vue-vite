@@ -119,7 +119,7 @@ export default {
     <!-- <div class="flex flex-row w-full bg-[#D9D9D9] rounded-xl"> -->
     <form v-on:submit.prevent>
 
-        <div class="flex flex-row w-full overflow-auto bg-[#D9D9D9] rounded-xl ">
+        <div class="flex flex-row w-full overflow-auto bg-slate-300 rounded-xl ">
             <div class="flex flex-col " ref="todo">
                 <div class="p-2 flex-nowrap flex border-r-[3px] border-white" :ref="`h${index}`" :style="style(index)"
                     :key="index" v-for="(header, index) in (this._info.headers)">
@@ -177,7 +177,7 @@ export default {
                     </div>
                     </p>
                 </h3>
-                <div class="m-2 w-0 select-none text-[#D9D9D9]">.</div>
+                <div class="m-2 w-0 select-none text-slate-300">.</div>
                 <div class="-ml-4 w-full h-full flex items-center">
                     <div v-if="this._info.contents[index]?.editable && edit" class="w-full h-full flex">
                         <input class="h-full w-full px-2  focus:outline-none border focus:border-black" :style="{
@@ -191,17 +191,17 @@ export default {
                                             
                     -->
                     </div>
-                    <h3 class="h-full w-full px-2 border border-t-2 border-[#D9D9D9] flex items-center"
+                    <h3 class="h-full w-full px-2 border border-t-2 border-slate-300 flex items-center"
                         v-else-if="!this._info.contents[index]?.value || this._info.contents[index]?.value.trim() == ''">
                         -
                     </h3>
-                    <h3 class="h-full w-full px-2 border border-t-2 border-[#D9D9D9] flex items-center"
+                    <h3 class="h-full w-full px-2 border border-t-2 border-slate-300 flex items-center"
                         v-else-if="this._info.contents[index]?.value.startsWith('http')">
                         <a :href="this._info.contents[index]?.value" target="_blank" class=" text-blue-800 hover:underline">
                             {{ this._info.contents[index]?.value }}
                         </a>
                     </h3>
-                    <h3 v-else class="h-full w-full px-2 border border-t-2 border-[#D9D9D9] flex items-center">
+                    <h3 v-else class="h-full w-full px-2 border border-t-2 border-slate-300 flex items-center">
                         {{ this._info.contents[index]?.value }}
                     </h3>
                 </div>

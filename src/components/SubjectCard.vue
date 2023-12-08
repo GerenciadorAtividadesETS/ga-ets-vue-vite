@@ -2,6 +2,8 @@
 import { Subject } from './type';
 
 export default {
+  
+  
   data() {
     return {
       count: 0,
@@ -32,15 +34,15 @@ export default {
 <template>
     <router-link :to="link"  class="w-64 h-24 shadow-md bg-white space-x-1 text-start rounded-3xl items-center flex flex-col overflow-hidden border-t-8 border-2" :style="{
       borderColor:`#${this.subject?.border}`,
-      borderTopColor: `#${this.subject?.color}`,
+      borderTopColor: `#${this.subject?.cor}`,
       }" >
       <!-- <div class=" w-full h-1 " :style="{ backgroundColor: `#${color}`}"></div> -->
       <div class="h-full pt-1 flex items-start flex-col gap-2 justify-between flex-wrap w-8/12">
-        <p class="leading-4 text-sm ">{{ subject?.name }}</p>
+        <p class="leading-4 text-sm ">{{ subject?.nome }}</p>
         <div>
           <div class="h-[1 px] w-full bg-gray-400 rounded-full">
           </div>
-          <!-- <p class="text-xs text-gray-500">{{ subject?.professor }}</p> -->
+          <!-- <p class="text-xs text-gray-500">{{ subject?.usuario_id }}</p> -->
         </div>
         <!-- <div class="text-xs text-gray-500">{{ customClass }}</div> -->
       </div>

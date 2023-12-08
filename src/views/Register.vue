@@ -98,7 +98,7 @@ export default {
             GaeAPI.post("/usuarios",
                 {
                     // "turma": this.getFieldValueByName("Turma", this.basicFields).valueOf(),
-                    "turma": 13,
+                    "turma": this.getFieldValueByName("Turma", this.basicFields),
                     "edv": this.getFieldValueByName("EDV", this.basicFields),
                     "nome": this.getFieldValueByName("Nome", this.nameFields),
                     "senha": this.getFieldValueByName("Senha", this.passwordFields),
@@ -107,6 +107,7 @@ export default {
                 )
                 .then((res) => {
                     console.log(res.data)
+                    this.$cookie.set
                     alert(JSON.stringify(res.data))
                 })
                 .catch((res)=>{
