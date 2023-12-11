@@ -103,19 +103,19 @@ export default {
                             id: 1,
                             titulo: "outro nome bem grande so para testar o limite de tamanhos",
                             cor: "000000",
-                            data_criacao: (new Date),
-                            data_entrega: (new Date),
+                            dataCriacao: (new Date),
+                            dataEntrega: (new Date),
                             descricao: "",
-                            usuario_id: "92900290"
+                            idUsuario: "92900290"
                         },
                         {
                             id: 2,
                             titulo: "nome",
                             cor: "000000",
-                            data_criacao: (new Date),
-                            data_entrega: (new Date),
+                            dataCriacao: (new Date),
+                            dataEntrega: (new Date),
                             descricao: "",
-                            usuario_id: "92900290"
+                            idUsuario: "92900290"
                         },
                     ] as Activity[]
             } else {
@@ -124,19 +124,19 @@ export default {
                         id: 3,
                         titulo: "atividade com nome especifico",
                         cor: "000000",
-                        data_criacao: (new Date),
-                        data_entrega: (new Date),
+                        dataCriacao: (new Date),
+                        dataEntrega: (new Date),
                         descricao: "",
-                        usuario_id: "92900291"
+                        idUsuario: "92900291"
                     },
                     {
                         id: 4,
                         titulo: "aquela que vai demorar o semestre inteiro",
                         cor: "000000",
-                        data_criacao: (new Date),
-                        data_entrega: (new Date),
+                        dataCriacao: (new Date),
+                        dataEntrega: (new Date),
                         descricao: "",
-                        usuario_id: "92900292"
+                        idUsuario: "92900292"
                     },
                 ] as Activity[]
             }
@@ -176,15 +176,15 @@ export default {
                     [
                         {
                             id: 1,
-                            data_alteracao: (new Date),
-                            data_entrega: (new Date),
-                            usuario_id: "92900000"
+                            dataAlteracao: (new Date),
+                            dataEntrega: (new Date),
+                            idUsuario: "92900000"
                         },
                         {
                             id: 2,
-                            data_alteracao: (new Date),
-                            data_entrega: (new Date),
-                            usuario_id: "92900001"
+                            dataAlteracao: (new Date),
+                            dataEntrega: (new Date),
+                            idUsuario: "92900001"
                         },
                     ] as Answer[]
             } else {
@@ -212,9 +212,9 @@ export default {
                     [
                         {
                             id: 2,
-                            data_alteracao: (new Date),
-                            data_entrega: (new Date),
-                            usuario_id: "92900002"
+                            dataAlteracao: (new Date),
+                            dataEntrega: (new Date),
+                            idUsuario: "92900002"
                         },
                     ] as Answer[]
             }
@@ -222,10 +222,10 @@ export default {
         },
         isInAnswers(student: User) {
             // Check if the student is in the answers list
-            return this.answers.some((answer: Answer) => answer.usuario_id == student.edv);
+            return this.answers.some((answer: Answer) => answer.idUsuario == student.edv);
         },
         isEdvInList(estudante: User) {
-            return this.listaIds.some((item: Answer) => item.usuario_id === estudante.edv);
+            return this.listaIds.some((item: Answer) => item.idUsuario === estudante.edv);
         },
     },
     watch: {
@@ -250,7 +250,7 @@ export default {
             console.log("chamou");
 
             return this.students.map((student: User) => {
-                let answer = this.answers.find((item: Answer) => item.usuario_id == student.edv)
+                let answer = this.answers.find((item: Answer) => item.idUsuario == student.edv)
                 if (!answer) {
                     return
                 }
@@ -263,7 +263,7 @@ export default {
         },
         estudanteSemResposta() {
             return this.students.filter((student: User) => {
-                let answer = !this.answers.find((item: Answer) => item.usuario_id == student.edv)
+                let answer = !this.answers.find((item: Answer) => item.idUsuario == student.edv)
                 if (!answer) {
                     return
                 }
@@ -277,7 +277,7 @@ export default {
         orderedStudents() {
             // Create a copy of the students array
             this.students.map((student: User) => {
-                if (this.answers.some((item: Answer) => item.usuario_id == student.edv)) {
+                if (this.answers.some((item: Answer) => item.idUsuario == student.edv)) {
 
                 }
             })
@@ -301,7 +301,7 @@ export default {
             class="gap-2 items-center p-4 flex-col justify-around sm:flex-row drop-shadow-md min-w-[272px] flex w-full mb-0 bg-white">
             <div class="flex flex-row items-center gap-2 sm:flex-col sm:items-start">
                 Turma
-                <select class="max-w-[5rem] min-w-[5rem]  w-full border p-2 rounded focus:outline-none" v-model="selectedClass">
+                <select class="max-w-[7rem] min-w-[7rem]  w-full border p-2 rounded focus:outline-none" v-model="selectedClass">
                     <option disabled :value="0">Selecione</option>
                     <option v-for="i in turmas" :value="i">{{ i }}</option>
                 </select>
@@ -356,13 +356,13 @@ export default {
                     <h3 class="font-semibold pr-2">Nome: </h3>{{ selectedActivity.titulo }}
                 </h3>
                 <h3 class="flex">
-                    <h3 class="font-semibold pr-2">Criado por: </h3>{{ professores.find(p => p.edv == this.selectedActivity.usuario_id)?.nome }}
+                    <h3 class="font-semibold pr-2">Criado por: </h3>{{ professores.find(p => p.edv == this.selectedActivity.idUsuario)?.nome }}
                 </h3>
                 <h3 class="flex">
-                    <h3 class="font-semibold pr-2">Data de Inicio: </h3>{{ selectedActivity?.data_criacao?.toLocaleString() }}
+                    <h3 class="font-semibold pr-2">Data de Inicio: </h3>{{ selectedActivity?.dataCriacao?.toLocaleString() }}
                 </h3>
                 <h3 class="flex">
-                    <h3 class="font-semibold pr-2">Data de Entrega: </h3>{{ selectedActivity?.data_entrega?.toLocaleString() }}
+                    <h3 class="font-semibold pr-2">Data de Entrega: </h3>{{ selectedActivity?.dataEntrega?.toLocaleString() }}
                 </h3>
             </div>
 
@@ -387,7 +387,7 @@ export default {
                                     {{ studentAnswer?.student?.edv }}
                                 </p>
                                 <p class="">
-                                    {{ studentAnswer?.answer.data_entrega?.toLocaleString() }}
+                                    {{ studentAnswer?.answer.dataEntrega?.toLocaleString() }}
                                 </p>
                             </div>
                         </div>

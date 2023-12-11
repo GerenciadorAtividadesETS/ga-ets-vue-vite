@@ -4,44 +4,12 @@ import SubjectCard from '../components/SubjectCard.vue';
 import { Subject } from '../components/type';
 import isLoggedMixin from '../service/userSession';
 export default {
+    setup(props, ctx) {
+        
+    },
     data() {
         return {
-            subjects: [
-                {
-                    id: 0,
-                    nome: "nome da materia",
-                    cor: "000",
-                    border: "a0a0a0"
-                },
-                {
-                    id: 1,
-                    nome: "UM NOME BEM GRANDE DE UMA MATERIA",
-                    cor: "000",
-                    border: "ffa0a0"
-                },
-                {
-                    id: 2,
-                    nome: "um nome nem tão pequeno apenas para exemplificar",
-                    cor: "000",
-                    border: "a0a0a0"
-                },
-                {
-                    id: 3,
-                    nome: "um nome nem tão pequeno apenas para exemplificar",
-                    cor: "000",
-                    border: "a0a0a0"
-                },
-                {
-                    id: 4,
-                    nome: "um nome nem tão pequeno apenas para exemplificar",
-                    cor: "000",
-                    border: "a0a0a0"
-                },
-
-
-
-            ] as Subject[],
-            list: [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,],
+            subjects: [] as Subject[],
             user: false
         }
     },
@@ -59,7 +27,7 @@ export default {
         })
         .then((res)=>{
             console.log(res.data.content);
-            
+            this.subjects = res.data.content
         })
     },
 
@@ -82,8 +50,11 @@ export default {
             </div>
             <!-- </div> -->
         </div>
-        <div class="h-full flex-wrap justify-evenly min-w-[272px] flex w-full mb-0 bg-white">
-            <div v-for="subject in subjects">
+        <div class="h-full flex-wrap  min-w-[272px] flex w-full mb-0 bg-white">
+            <div v-if="subjects.length == 0">
+                <h3>Sua turma não possui nenhuma tarefa</h3>
+            </div>
+            <div v-else v-for="subject in subjects">
                 <div :key=subject.id class="p-4">
                     <SubjectCard :subject="subject" />
                 </div>

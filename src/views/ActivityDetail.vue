@@ -3,36 +3,26 @@ import { useRoute } from 'vue-router';
 import { Activity, Answer, User } from '../components/type';
 import AnswerCard from '../components/AnswerCard.vue';
 import Divider from 'primevue/divider';
+import isLoggedMixin from '../service/userSession';
+import GaeAPI from '../apis/gaeAPI';
 
 
 export default {
     setup(props) {
-        console.log('AAAAAAAAAA');
+        // console.log('AAAAAAAAAA');
         const route = useRoute();
-        console.log(route.params.props);
+        // console.log(route.params.props);
         const subjectId = route.params.subjectId;
         const activityId = route.params.activityId;
         
         
-        const activity:Activity = {
-            id: 0,
-            titulo: "Cubo Magico Jogo da Velha",
-            cor: "ff0000",
-            descricao: "<div>exemplo</div>",
-            usuario_id: "92900290",
-            data_criacao: (new Date),
-            data_entrega: (new Date)
-            // usuario_id: "Gus Tavo",
-        };
         const buscarAPI = () => {
             // console.log(route.params.id);
         };
         buscarAPI();
         return {
             subjectId,
-            activityId,
-            activity,
-            
+            activityId,            
         };
     },
     methods: {
@@ -61,7 +51,26 @@ export default {
         //     // required: true
         // }
     },
-    components: { AnswerCard }
+    mixins: [isLoggedMixin],
+    components: { AnswerCard },
+    data() {
+        return {
+            activity: {} as Activity,
+            user: {} as User
+        }
+    },
+    created(){
+        GaeAPI.get(`/atividades/${this.activityId}`)
+        .then((res)=>{
+            this.activity = res.data
+        })
+        this.checkIfLogged()
+            .then(response => {
+                // console.log(response);
+                this.user = response ? response : false;
+            })
+            .catch(error => console.log(error));
+    }
 }
 </script>
 
@@ -71,7 +80,7 @@ export default {
         <div 
         class="flex flex-row mb-5 text-4xl font-semibold text-end items-center">
             <div class="min-h-[2.5rem] max-h-[2.5rem] max-w-[2.5rem] min-w-[2.5rem] rounded-2xl mr-2" :style="{ backgroundColor: ` #${activity.cor}` }"></div>
-            <h1 class="text-2xl py-8 font-semibold"> {{ activity.titulo }}</h1>
+            <h1 class="text-2xl py-8 font-semibold"> {{ activity?.titulo }}</h1>
         </div>
         <div
             class="p-2 gap-2 justify-between flex-col drop-shadow-md flex mb-0 bg-white px-5">
@@ -79,26 +88,25 @@ export default {
                 <h1 class="text-xl font-semibold"> Detalhes</h1>
                 <div class="">
                 <p>
-                    <!-- Aberto: {{ formatDateToString(this.activity.data_criacao) }} -->
-                    Aberto: {{ activity.data_criacao.toLocaleString() }}
+                    <!-- Aberto: {{ formatDateToString(this.activity?.dataCriacao) }} -->
+                    Aberto: {{ (new Date(activity?.dataCriacao)).toLocaleString() }}
                 </p>
                 <p>
-                    Vencimento: {{ activity.data_entrega?.toLocaleString()?? "-"}}
+                    Vencimento: {{ (new Date(activity?.dataEntrega)).toLocaleString()?? "-"}}
                 </p>
             </div>
             
             <div class="w-full h-[2px] rounded-full bg-gray-500"></div>
             <h1 class="text-xl font-semibold"> Atividade</h1>
-            <!-- <h1 class="text-xl font-semibold"> {{ activity.titulo }}</h1> -->
+            <!-- <h1 class="text-xl font-semibold"> {{ activity?.titulo }}</h1> -->
 
             <div class="">
-                {{ activity.descricao }}
-                {{ typeof(activityId) }}
+                {{ activity?.descricao }}
             </div>
             
-                <!-- <AnswerCard :activity='activity' :user="user"/> -->
+                <AnswerCard :activity='activity' :user="user"/>
             
-            <!-- <AnswerCard :answer="answer" :.data_entrega="activity?.data_entrega" :edit="edit"/> -->
+            <!-- <AnswerCard :answer="answer" :.dataEntrega="activity?.dataEntrega" :edit="edit"/> -->
             
             <!-- <div class="h-0.5 md:block hidden w-36 rounded-full bg-gray-300"></div> -->
 

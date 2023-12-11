@@ -1,5 +1,6 @@
 
 export type User = {
+    id?: number,
     edv: string,
     nome: string,
     cor: string,
@@ -29,19 +30,21 @@ export type Subject = {
 
 export type Activity = {
     id: number,
-    usuario_id: string,
+    idUsuario: string,
+    idMateria: number,
     titulo: string,
     descricao: string,
-    data_criacao: Date,
-    data_entrega?: Date,
+    dataCriacao: string,
+    dataEntrega?: string,
     cor: string,
 }
 
 export type Answer = {
     id: number,
-    usuario_id: string,
-    data_alteracao: Date,
-    data_entrega?: Date,
+    idUsuario: number,
+    idAtividade: number,
+    dataAlteracao?: string,
+    dataEntrega?: string,
     compartilhado?: string,
     github?:string,
     comentario?: string,

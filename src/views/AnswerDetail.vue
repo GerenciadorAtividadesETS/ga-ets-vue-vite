@@ -18,12 +18,12 @@ export default {
         } as User
         let answer = {
             id:0,
-            usuario_id:"",
+            idUsuario:"",
             compartilhado:'LIVIA_AKIMI_SEKIGAMI',
             github:'',
         } as Answer
         GaeAPI.get('/answer/' + answerId).then((res) => answer = res.data);
-        GaeAPI.get('/user/' + answer.usuario_id).then((res) => student = res.data);
+        GaeAPI.get('/user/' + answer.idUsuario).then((res) => student = res.data);
         return {
             answerId,
             answer,
@@ -48,11 +48,11 @@ export default {
             <h1 class="text-xl font-semibold"> Detalhes</h1>
             <div class="">
                 <p>
-                    <!-- Aberto: {{ formatDateToString(this.activity.data_criacao) }} -->
-                    <!-- Aberto: {{ activity.data_criacao.toLocaleString() }} -->
+                    <!-- Aberto: {{ formatDateToString(this.activity.dataCriacao) }} -->
+                    <!-- Aberto: {{ activity.dataCriacao.toLocaleString() }} -->
                 </p>
                 <p>
-                    <!-- Vencimento: {{ activity.data_entrega?.toLocaleString() ?? "-" }} -->
+                    <!-- Vencimento: {{ activity.dataEntrega?.toLocaleString() ?? "-" }} -->
                 </p>
             </div>
 
@@ -62,7 +62,7 @@ export default {
 
             <AnswerDetailCard :answer="answer" :user="student" />
 
-            <!-- <AnswerCard :answer="answer" :.data_entrega="activity?.data_entrega" :edit="edit"/> -->
+            <!-- <AnswerCard :answer="answer" :.dataEntrega="activity?.dataEntrega" :edit="edit"/> -->
 
             <!-- <div class="h-0.5 md:block hidden w-36 rounded-full bg-gray-300"></div> -->
 

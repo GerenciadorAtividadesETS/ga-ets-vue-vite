@@ -28,8 +28,8 @@ export default {
 
         var answer: Answer = {
             id: 0,
-            usuario_id: user.edv,
-            data_alteracao: (new Date),
+            idUsuario: user.edv,
+            dataAlteracao: (new Date),
             compartilhado: "GUSTAVO_MIGUEL_RONCADA_MEIRA\\TRILHA_DEV\\AULAS JAVA\\GAE",
             github: "https://github.com/Honkato/Delivery",
             comentario: ""
@@ -41,8 +41,8 @@ export default {
                 () => {
                     answer = {
                         id: 0,
-                        usuario_id: user.edv,
-                        data_alteracao: (new Date),
+                        idUsuario: user.edv,
+                        dataAlteracao: (new Date),
                         compartilhado: "GUSTAVO_MIGUEL_RONCADA_MEIRA\\TRILHA_DEV\\AULAS JAVA\\GAE",
                         github: "https://github.com/Honkato/Delivery",
                         comentario: ""
@@ -85,8 +85,8 @@ export default {
             ],
             contents:
                 [
-                    { value: props.data_entrega?.toLocaleString() ?? "" },
-                    { value: answer?.data_alteracao?.toDateString() ?? "" },
+                    { value: props.dataEntrega?.toLocaleString() ?? "" },
+                    { value: answer?.dataAlteracao?.toDateString() ?? "" },
                     { value: answer?.compartilhado ?? "-", function: () => { copy(); }, icon: "copy", editable: true },
                     { value: answer?.github ?? "-", editable: true },
                     { value: answer?.comentario ?? "", editable: true }

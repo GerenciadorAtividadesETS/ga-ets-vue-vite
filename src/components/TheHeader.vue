@@ -17,9 +17,6 @@ export default {
 
     }
   },
-  props: {
-    // user: {} as () => User,
-  },
   data() {
     return {
       user: {} as User,

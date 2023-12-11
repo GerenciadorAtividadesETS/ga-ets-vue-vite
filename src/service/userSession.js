@@ -25,8 +25,13 @@ var isLoggedMixin = {
                   resolve(response.data);
                })
                .catch(error => {
+                  
+                  this.$cookies.remove("USER_TOKEN")
                   reject(error.response.data);
-               });
+               })
+               .finally(res=>{
+                  console.log("_____________________");
+               })
           })
           
       }

@@ -76,7 +76,7 @@ export default {
                     this.$router.push({ path: '/' })
                 })
                 .catch((error) => {
-                    console.log(error.response);
+                    console.log(error.response??"Erro de conexão com o servidor");
 
                 })
             // GaeAPI.post("/login", {

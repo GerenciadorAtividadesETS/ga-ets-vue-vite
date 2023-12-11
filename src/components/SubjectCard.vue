@@ -42,7 +42,7 @@ export default {
         <div>
           <div class="h-[1 px] w-full bg-gray-400 rounded-full">
           </div>
-          <!-- <p class="text-xs text-gray-500">{{ subject?.usuario_id }}</p> -->
+          <!-- <p class="text-xs text-gray-500">{{ subject?.idUsuario }}</p> -->
         </div>
         <!-- <div class="text-xs text-gray-500">{{ customClass }}</div> -->
       </div>

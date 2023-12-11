@@ -1,108 +1,37 @@
 <script lang="ts">
 import CustomTable from './CustomTable.vue';
-import { Activity, Answer } from './type';
+import { Activity, Answer, Table, User } from './type';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';   // optional
 import Row from 'primevue/row';
-import { Table, User } from './type';
 import axios from 'axios';
 import GaeAPI from '../apis/gaeAPI'
+import isLoggedMixin from '../service/userSession';
 
 type arrayBool = { value: Boolean }
 
 export default {
 
-    setup(props, ctx) {
-        // retorno da api.then setar variavel 
-        // console.log();
-
-        
-        var user = props.user
-
-        var answer: Answer = {
-            id: 0,
-            usuario_id: user.edv,
-            data_alteracao: (new Date),
-            compartilhado: "GUSTAVO_MIGUEL_RONCADA_MEIRA\\TRILHA_DEV\\AULAS JAVA\\GAE",
-            github: "https://github.com/Honkato/Delivery",
-            comentario: ""
-        };
-
-        const tokenJWT = "";
-        GaeAPI.get("", { headers: { Authorization: tokenJWT } })
-            .then(
-                () => {
-                    answer = {
-                        id: 0,
-                        usuario_id: user.edv,
-                        data_alteracao: (new Date),
-                        compartilhado: "GUSTAVO_MIGUEL_RONCADA_MEIRA\\TRILHA_DEV\\AULAS JAVA\\GAE",
-                        github: "https://github.com/Honkato/Delivery",
-                        comentario: ""
-                    }
-                }
-            )
-
-        let formatNum = (num: number) => {
-            return num.toString().length == 1 ? "0" + num.toString() : num.toString()
-        }
-        const copy = () => {
-
-            let textCopy =
-                "S:\\PM\\ter\\ets\\Inter_Setor\\COMPARTILHADO\\APRENDIZES\\DIGITAL_SOLUTIONS_"
-                + formatNum(user.turma)
-                + "\\"
-                + answer?.compartilhado
-
-            navigator.clipboard.writeText(textCopy)
-
-        }
-        const info: Table = {
-            headers: [
-                { value: "Tempo Restante" },
-                { value: "Ultima alteração" },
-                { value: "Compartilhado", show: false, aditional: "Compartilhado: O link no compartilhado já leva em conta a pasta Aprendizes e a sua turma, porém mesmo copiando o caminho inteiro." },
-                { value: "Github", show: false, aditional: "GitHub: Verificar se o projeto contem informações sensiveis da BOSCH antes de publicar, caso houver, crie como repositorio privado e de acesso ao(s) instrutor(es)" },
-                { value: "Comentario" },
-            ],
-            contents:
-                [
-                    { value: props.activity?.data_entrega?.toLocaleString() ?? "" },
-                    { value: answer?.data_alteracao?.toDateString() ?? "" },
-                    { value: answer?.compartilhado ?? "-", function: () => { copy(); }, icon: "copy", editable: true },
-                    { value: answer?.github ?? "-", editable: true },
-                    { value: answer?.comentario ?? "", editable: true }
-                ]
-        }
-
-
-        return {
-            copy,
-            info,
-            user
-        }
-    },
+    
     props: {
         // answer: {} as () => Answer,
         activity: {
-            type: {} as ()=> Activity,
+            // type: {} as ()=> Activity,
             required: true
         },
         user: {
-            type: {} as ()=> User,
+            // type: {} as ()=> User,
             required: true
         },
     },
     data() {
         return {
-            values: ["a", "b", "c",],
-            // values: [
-            // { field: 'Tempo Restante', value: "5 dias" },
-            // { field: '' }],
-            columns: [{ field: "field", header: "" }, { field: "value", header: "" }],
+            info: {} as Table,
             _info: {} as Table,
-            edit: false
+            edit: false,
+            answer: {} as Answer,
+            copy: () => { },
         }
     },
     components: {
@@ -113,11 +42,51 @@ export default {
         CustomTable,
     },
     methods: {
+        calculateTimeDifference(date1: Date, date2: Date): { days: number, hours: number, minutes: number, seconds: number } {
+            const timeDifference = Math.abs(date2.getTime() - date1.getTime());
+
+            const seconds = Math.floor(timeDifference / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            return {
+                days: days,
+                hours: hours % 24,
+                minutes: minutes % 60,
+                seconds: seconds % 60,
+            };
+        },
         returnInfo() {
             if (this.$refs.customTable) {
-                this._info = this.$refs.customTable.returnInfo()
-                console.log("--");
-                console.log(this._info);
+                let res = this.$refs.customTable.returnInfo().contents
+                if (this.answer.id){
+                    console.log("Tem");
+                }
+                else{
+                    console.log("Não");
+                    DANDO ERRO AKIO TERMINAR;;;;;;;;;;
+                    let newAnswer = {
+                        idAtividade: this.activity.id,
+                        idUsuario: this.user.id,
+                        comentario: 
+                    } as Answer
+                    console.log(newAnswer);
+                    
+                    // GaeAPI.post('/respostas', newAnswer ,{
+                    //     headers:{
+                    //         Authorization: this.$cookies.get("USER_TOKEN")
+                    //     }
+                    // })
+                    // .then((res)=>{
+                    //     alert(res.data)
+                    // })
+                    // .catch(error=>{
+                    //     alert(error.response.data)
+                    // })
+                }
+                // console.log("--");
+                // console.log(this._info);
             }
         },
         runReturnInfo() {
@@ -134,16 +103,124 @@ export default {
         runCancelChanges() {
             if (this.$refs.customTable) {
                 this.edit = false
-                console.log(this.edit);
+                // console.log(this.edit);
                 this.$refs.customTable.triggerCancelChanges()
             }
         }
     },
-    mounted() {
+    watch: {
+        activity(activity: Activity) {
+            // GaeAPI.get(`/respostas?atividade=${activity.id}`)
+            GaeAPI.get(`/respostas?atividade=${activity.id}`, {
+                headers: {
+                    Authorization: this.$cookies.get("USER_TOKEN")
+                }
+            })
+                .then(res => {
+                    
+                    
+                    this.answer = res.data
+                    // console.log(res.data);
+
+                })
+                .catch(error =>{
+                    if (error.response.status){
+                        this.answer = {
+                            idAtividade: this.activity.id,
+                            idUsuario: this.user.id,
+
+                        } as Answer
+                    }
+                    
+                })
+        },
+        answer(answer: Answer) {
+            console.log(answer);
+            
+            let formatNum = (num: number) => {
+                return num.toString().length == 1 ? "0" + num.toString() : num.toString()
+            }
 
 
+            let activityUser = {} as User
+            // GaeAPI.get(`/turmas/${this.activity.turma}`, {
+            //     headers: {
+            //         Authorization: this.$cookies.get('USER_TOKEN')
+            //     }
+            // })
+            //     .then(res => {
+            //         let users = res.data.content as User[]
+            //         activityUser = users.find(user => user.id == answer.idUsuario) as User
+            //     })
+            //     .catch(error => {
+            //         GaeAPI.get('/usuarios', {
+            //             headers: {
+            //                 Authorization: this.$cookies.get('USER_TOKEN')
+            //             }
+            //         })
+            //             .then(resU => {
+            //                 activityUser = resU.data
+            //             })
+            //     })
+            this.copy = () => {
 
+                let textCopy =
+                    "S:\\PM\\ter\\ets\\Inter_Setor\\COMPARTILHADO\\APRENDIZES\\DIGITAL_SOLUTIONS_"
+                    + formatNum(this.user.turma)
+                    + "\\"
+                    + answer?.compartilhado
+
+                navigator.clipboard.writeText(textCopy)
+
+            }
+            let date: { days: 0, hours: 0, minutes: 0, seconds: 0 }
+            if (answer?.dataAlteracao) {
+                date = this.calculateTimeDifference((new Date(answer?.dataAlteracao)), (new Date(this.activity.dataEntrega)))
+                // console.log(date);
+            } else {
+                date = this.calculateTimeDifference((new Date), (new Date(this.activity.dataEntrega)))
+
+            }
+
+            this.info = {
+                headers: [
+                    { value: "Tempo Restante" },
+                    { value: "Ultima alteração" },
+                    { value: "Compartilhado", show: false, aditional: "Compartilhado: O link no compartilhado já leva em conta a pasta Aprendizes e a sua turma, porém mesmo copiando o caminho inteiro." },
+                    { value: "Github", show: false, aditional: "GitHub: Verificar se o projeto contem informações sensiveis da BOSCH antes de publicar, caso houver, crie como repositorio privado e de acesso ao(s) instrutor(es)" },
+                    { value: "Comentario" },
+                ],
+                contents:
+                    [
+                        { value: date?.days + " dias " + date?.hours + " Horas " + date?.minutes + " Minutos" },
+                        { value: answer?.dataAlteracao? (new Date(answer?.dataAlteracao)).toLocaleString() : "-" },
+                        { value: answer?.compartilhado ?? "-", function: () => { this.copy(); }, icon: "copy", editable: true },
+                        { value: answer?.github ?? "-", editable: true },
+                        { value: answer?.comentario ?? "", editable: true }
+                    ]
+            } as Table
+
+        }
     },
+    // mixins: [isLoggedMixin],
+    created() {
+        let answer = {} as Answer
+        let activity = this.activity as Activity
+        // this.checkIfLogged()
+        //     .then(response => {
+        //         this.user = response ? response : false;
+
+        //     })
+        //     .catch(error =>{});
+        // GaeAPI.get('/materias', {
+        //     headers: {
+        //         Authorization: this.$cookies.get('USER_TOKEN')
+        //     }
+        // })
+        //     .then((res) => {
+        //         this.getSubject(res.data.content)
+        //     })
+    }
 }
 </script>
 
@@ -152,14 +229,15 @@ export default {
     <div class=" w-full flex items-center justify-between">
 
         <h1 class="text-xl font-semibold">Sua Resposta</h1>
-        <button :onclick="() => { edit = !edit }" class="bg-blue-400 p-1 rounded-md w-14"> Editar</button>
+        <button v-if="(new Date(this.activity.dataEntrega)) > (new Date)" :onclick="() => { edit = !edit }" class="bg-blue-400 p-1 rounded-md w-14"> Editar</button>
     </div>
-    <CustomTable @return-info="returnInfo" @cancel-changes="cancelChanges" :info="this.info" :edit="edit"
+
+    <CustomTable @return-info="returnInfo" @cancel-changes="cancelChanges" :info='this.info' :edit="edit"
         ref="customTable" />
 
     <div v-if="edit" class="flex justify-end">
         <button :onclick="() => runCancelChanges()" class="bg-red-400 w-16 p-1 rounded-lg mr-2">cancelar</button>
         <button :onclick="() => runReturnInfo()" class="bg-green-400 w-16 p-1 rounded-lg">salvar</button>
     </div>
-    <!-- <DataTable :value="this.values" :showGridlines="true" tableStyle="" -->
+    <!-- <DataTable :value="this.values" :showGridlines="true" tableStyle=""/> -->
 </template>

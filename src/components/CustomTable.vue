@@ -22,19 +22,19 @@ export default {
             back: cloneDeep(this.info),
         }
     },
+    watch:{
+        info(){
+            this._info = this.info
+        }
+    },
     emits: ['return-info', 'cancel-changes'],
     methods: {
-
-
         style(i: number) {
             var obj = {} as any
             if (i != this._info.headers.length - 1) {
                 obj.borderBottomWidth = "3px";
             }
             return obj
-        },
-        getWindowHeight() {
-            this.y = this.$refs.todo.clientHeight;
         },
         showHide(e: MouseEvent, index: number) {
             if (this._info.headers[index].show) {
@@ -84,16 +84,7 @@ export default {
 
 
     },
-    mounted() {
-        // const that = this
-
-
-        this.showDiv = true
-
-        this.$nextTick(function () {
-            this.getWindowHeight()
-        });
-    },
+    
     components: {
         CustomInput,
         FontAwesomeIcon
