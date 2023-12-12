@@ -5,7 +5,7 @@ import { Subject } from '../components/type';
 import isLoggedMixin from '../service/userSession';
 export default {
     setup(props, ctx) {
-        
+
     },
     data() {
         return {
@@ -14,21 +14,21 @@ export default {
         }
     },
     mixins: [
-        
+
     ],
     components: {
         SubjectCard
     },
     created() {
-        GaeAPI.get('/materias',{
+        GaeAPI.get('/materias', {
             headers: {
                 Authorization: this.$cookies.get('USER_TOKEN')
             }
         })
-        .then((res)=>{
-            console.log(res.data.content);
-            this.subjects = res.data.content
-        })
+            .then((res) => {
+                console.log(res.data.content);
+                this.subjects = res.data.content
+            })
     },
 
 }
@@ -50,13 +50,16 @@ export default {
             </div>
             <!-- </div> -->
         </div>
-        <div class="h-full flex-wrap  min-w-[272px] flex w-full mb-0 bg-white">
-            <div v-if="subjects.length == 0">
-                <h3>Sua turma não possui nenhuma tarefa</h3>
-            </div>
-            <div v-else v-for="subject in subjects">
-                <div :key=subject.id class="p-4">
-                    <SubjectCard :subject="subject" />
+        <div class="h-full bg-white flex justify-center">
+            <div class="h-min flex-wrap flex justify-center mb-0">
+
+                <div v-if="subjects.length == 0">
+                    <h3>Sua turma não possui nenhuma tarefa</h3>
+                </div>
+                <div v-else v-for="subject in subjects">
+                    <div :key=subject.id class="p-4">
+                        <SubjectCard :subject="subject" />
+                    </div>
                 </div>
             </div>
         </div>

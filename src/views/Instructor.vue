@@ -1,38 +1,9 @@
 <script lang="ts">
+import GaeAPI from '../apis/gaeAPI'
 import { Activity, Answer, Subject, User } from '../components/type'
 import { Icon } from "@iconify/vue"
 
 export default {
-
-    setup() {
-        let turmas = [0, 3, 4, 5, 7, 10]
-        turmas = turmas.slice(1)
-        let professores: User[]
-        professores = [
-            {
-                cor: "ff0000",
-                edv: "92900290",
-                nome: "Gus tavo",
-                turma: 0
-            },
-            {
-                cor: "00ff00",
-                edv: "92900291",
-                nome: "Li Via",
-                turma: 0
-            },
-            {
-                cor: "0000ff",
-                edv: "92900292",
-                nome: "Nome do professor",
-                turma: 0
-            },
-        ]
-        return {
-            turmas,
-            professores
-        }
-    },
     data() {
         var selectedActivity = {} as Activity
         var selectedSubject = {} as Subject
@@ -49,43 +20,19 @@ export default {
             students: [] as User[],
             answers: [] as Answer[],
             hideDetails: true,
+            turmas: [] as Number[],
+            professores: [] as User[]
         }
     },
     methods: {
-
         alterarMaterias(turma: number) {
             /*
             api pegando e setando as infos
             */
-            if (turma % 2 == 0) {
-                this.materias =
-                    [
-                        {
-                            id: 1,
-                            nome: "Banco de dados",
-                            cor: "ff0000"
-                        },
-                        {
-                            id: 2,
-                            nome: "Um nome bem grande para testar o tamanho do componente",
-                            cor: "00ff00"
-                        },
-                    ] as Subject[]
-            } else {
-                this.materias =
-                    [
-                        {
-                            id: 3,
-                            nome: "UX/UI",
-                            cor: "ff0000"
-                        },
-                        {
-                            id: 4,
-                            nome: "Ingles",
-                            cor: "00ff00"
-                        },
-                    ] as Subject[]
-            }
+            GaeAPI.get('/materias', { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
+                .then(res => this.materias = res.data.content)
+            GaeAPI.get(`/turmas/${turma}`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
+                .then(res =>{ this.students = res.data.content;})
         },
         alterarAtividades(materia: Subject) {
             /*
@@ -95,51 +42,10 @@ export default {
                 this.atividades = []
                 return
             }
+            GaeAPI.get(`/atividades/turmas/${this.selectedClass}`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
+                .then(res => this.atividades = res.data.content)
 
-            if (materia.id % 2 == 0) {
-                this.atividades =
-                    [
-                        {
-                            id: 1,
-                            titulo: "outro nome bem grande so para testar o limite de tamanhos",
-                            cor: "000000",
-                            dataCriacao: (new Date),
-                            dataEntrega: (new Date),
-                            descricao: "",
-                            idUsuario: "92900290"
-                        },
-                        {
-                            id: 2,
-                            titulo: "nome",
-                            cor: "000000",
-                            dataCriacao: (new Date),
-                            dataEntrega: (new Date),
-                            descricao: "",
-                            idUsuario: "92900290"
-                        },
-                    ] as Activity[]
-            } else {
-                this.atividades = [
-                    {
-                        id: 3,
-                        titulo: "atividade com nome especifico",
-                        cor: "000000",
-                        dataCriacao: (new Date),
-                        dataEntrega: (new Date),
-                        descricao: "",
-                        idUsuario: "92900291"
-                    },
-                    {
-                        id: 4,
-                        titulo: "aquela que vai demorar o semestre inteiro",
-                        cor: "000000",
-                        dataCriacao: (new Date),
-                        dataEntrega: (new Date),
-                        descricao: "",
-                        idUsuario: "92900292"
-                    },
-                ] as Activity[]
-            }
+
         },
         alterarAlunosAtividades(atividade: Activity) {
             /*
@@ -149,83 +55,20 @@ export default {
                 this.students = [] as User[]
                 return
             }
+            // GaeAPI.get(`respostas/atividades/${this.selectedActivity.id}/turmas/${this.selectedClass}`,{headers:{Authorization:this.$cookies.get("USER_TOKEN")}})
+            GaeAPI.get(`respostas/atividades/${this.selectedActivity.id}/turmas/0`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
+                .then(res => {
+                    this.answers = res.data.content; console.log(res.data.content);
+                })
 
-            if (atividade.id % 2 == 0) {
-                this.students =
-                    [
-                        {
-                            turma: this.selectedClass,
-                            cor: '6a00b0',
-                            edv: '92900000',
-                            nome: 'Raissa Rossi'
-                        },
-                        {
-                            turma: this.selectedClass,
-                            cor: '000084',
-                            edv: '92900001',
-                            nome: 'Alfredo'
-                        },
-                        {
-                            turma: this.selectedClass,
-                            cor: '00ff84',
-                            edv: '92900002',
-                            nome: 'Jessofer'
-                        },
-                    ] as User[]
-                this.answers =
-                    [
-                        {
-                            id: 1,
-                            dataAlteracao: (new Date),
-                            dataEntrega: (new Date),
-                            idUsuario: "92900000"
-                        },
-                        {
-                            id: 2,
-                            dataAlteracao: (new Date),
-                            dataEntrega: (new Date),
-                            idUsuario: "92900001"
-                        },
-                    ] as Answer[]
-            } else {
-                this.students = [
-                    {
-                        turma: this.selectedClass,
-                        cor: '6a00b0',
-                        edv: '92900000',
-                        nome: 'Raissa Rossi'
-                    },
-                    {
-                        turma: this.selectedClass,
-                        cor: '000084',
-                        edv: '92900001',
-                        nome: 'Alfredo'
-                    },
-                    {
-                        turma: this.selectedClass,
-                        cor: '00ff84',
-                        edv: '92900002',
-                        nome: 'Jessofer'
-                    },
-                ] as User[]
-                this.answers =
-                    [
-                        {
-                            id: 2,
-                            dataAlteracao: (new Date),
-                            dataEntrega: (new Date),
-                            idUsuario: "92900002"
-                        },
-                    ] as Answer[]
-            }
 
         },
         isInAnswers(student: User) {
             // Check if the student is in the answers list
-            return this.answers.some((answer: Answer) => answer.idUsuario == student.edv);
+            return this.answers.some((answer: Answer) => answer.idUsuario == student.id);
         },
-        isEdvInList(estudante: User) {
-            return this.listaIds.some((item: Answer) => item.idUsuario === estudante.edv);
+        isIdInList(estudante: User) {
+            return this.listaIds.some((item: Answer) => item.idUsuario === estudante.id);
         },
     },
     watch: {
@@ -250,7 +93,7 @@ export default {
             console.log("chamou");
 
             return this.students.map((student: User) => {
-                let answer = this.answers.find((item: Answer) => item.idUsuario == student.edv)
+                let answer = this.answers.find((item: Answer) => item.idUsuario == student.id)
                 if (!answer) {
                     return
                 }
@@ -263,7 +106,7 @@ export default {
         },
         estudanteSemResposta() {
             return this.students.filter((student: User) => {
-                let answer = !this.answers.find((item: Answer) => item.idUsuario == student.edv)
+                let answer = !this.answers.find((item: Answer) => item.idUsuario == student.id)
                 if (!answer) {
                     return
                 }
@@ -277,7 +120,7 @@ export default {
         orderedStudents() {
             // Create a copy of the students array
             this.students.map((student: User) => {
-                if (this.answers.some((item: Answer) => item.idUsuario == student.edv)) {
+                if (this.answers.some((item: Answer) => item.idUsuario == student.id)) {
 
                 }
             })
@@ -286,8 +129,11 @@ export default {
 
 
         },
-
-    }
+    },
+    created() {
+        GaeAPI.get("/turmas", { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
+            .then(res => this.turmas = res.data.content.map(item => item.turma))
+    },
 }
 
 </script>
@@ -300,16 +146,29 @@ export default {
         <div
             class="gap-2 items-center p-4 flex-col justify-around sm:flex-row drop-shadow-md min-w-[272px] flex w-full mb-0 bg-white">
             <div class="flex flex-row items-center gap-2 sm:flex-col sm:items-start">
-                Turma
-                <select class="max-w-[7rem] min-w-[7rem]  w-full border p-2 rounded focus:outline-none" v-model="selectedClass">
+                <h2>
+                    Turma
+                </h2>
+                <select class="max-w-[7rem] min-w-[7rem]  w-full border p-2 rounded focus:outline-none"
+                    v-model="selectedClass">
                     <option disabled :value="0">Selecione</option>
                     <option v-for="i in turmas" :value="i">{{ i }}</option>
                 </select>
             </div>
             <div class="flex flex-row items-center gap-2 sm:flex-col sm:items-start"
                 :style="{ color: selectedClass == 0 ? 'gray' : 'black' }">
-                Materia
-                <select :disabled="selectedClass == 0" class="max-w-[10rem] min-w-[10rem]  w-full border p-2 rounded focus:outline-none"
+                <div class="flex justify-between w-full">
+                    <h2>
+                        Materia
+                    </h2>
+
+                    <button :style="{ backgroundColor: selectedClass == 0 ? 'rgb(74 222 128)' : '' }" :disabled="selectedClass == 0" class=" w-7 flex items-center justify-center bg-green-600 rounded-full">
+                        <div :style="{ backgroundColor: selectedClass == 0 ? 'rgb(170 240 240)' : '' }" class="absolute w-3 h-0.5 rounded-full bg-white"></div>
+                        <div :style="{ backgroundColor: selectedClass == 0 ? 'rgb(170 240 240)' : '' }" class="absolute h-3 w-0.5 rounded-full bg-white"></div>
+                    </button>
+                </div>
+                <select :disabled="selectedClass == 0"
+                    class="max-w-[10rem] min-w-[10rem]  w-full border p-2 rounded focus:outline-none"
                     v-model="selectedSubject">
                     <option disabled :value="{}">Selecione</option>
                     <option v-for="materia in materias" :value="materia">{{ materia.nome }}</option>
@@ -317,9 +176,12 @@ export default {
             </div>
             <div class="flex flex-row items-center gap-2 sm:flex-col sm:items-start"
                 :style="{ color: selectedSubject.id == null ? 'gray' : 'black' }">
-                Atividade
+                <h2>
+                    Atividade
+                </h2>
                 <select :disabled="selectedSubject.id == null ? true : false"
-                    class="max-w-[10rem] min-w-[10rem] w-full border p-2 rounded focus:outline-none" v-model="selectedActivity">
+                    class="max-w-[10rem] min-w-[10rem] w-full border p-2 rounded focus:outline-none"
+                    v-model="selectedActivity">
                     <option disabled :value="{}">Selecione</option>
                     <option v-for="atividade in atividades" :value="atividade">{{ atividade.titulo }}</option>
                 </select>
@@ -344,25 +206,33 @@ export default {
         </div>
         <div
             class=" items-center p-2 flex-col border-t justify-around drop-shadow-md min-w-[272px] flex w-full mb-0 bg-white">
-            <button :onclick="()=>hideDetails = !hideDetails" class="w-full items-center p-2 flex justify-between rounded hover:bg-slate-200">
+            <button :onclick="() => hideDetails = !hideDetails"
+                class="w-full items-center p-2 flex justify-between rounded hover:bg-slate-200">
                 <h2 class="font-semibold">
                     Detalhes Atividade
                 </h2>
-                <div v-if="hideDetails" class="border-b-8 border-b-black border-r-8 border-r-transparent border-l-8 border-l-transparent w-0 h-0"></div>
-                <div v-else class="border-t-8 border-t-black border-r-8 border-r-transparent border-l-8 border-l-transparent w-0 h-0"></div>
+                <div v-if="hideDetails"
+                    class="border-b-8 border-b-black border-r-8 border-r-transparent border-l-8 border-l-transparent w-0 h-0">
+                </div>
+                <div v-else
+                    class="border-t-8 border-t-black border-r-8 border-r-transparent border-l-8 border-l-transparent w-0 h-0">
+                </div>
             </button>
             <div class="w-full p-2" v-if="!hideDetails">
                 <h3 class="flex">
                     <h3 class="font-semibold pr-2">Nome: </h3>{{ selectedActivity.titulo }}
                 </h3>
                 <h3 class="flex">
-                    <h3 class="font-semibold pr-2">Criado por: </h3>{{ professores.find(p => p.edv == this.selectedActivity.idUsuario)?.nome }}
+                    <h3 class="font-semibold pr-2">Criado por: </h3>{{ professores.find(p => p.edv ==
+                        this.selectedActivity.idUsuario)?.nome }}
                 </h3>
                 <h3 class="flex">
-                    <h3 class="font-semibold pr-2">Data de Inicio: </h3>{{ selectedActivity?.dataCriacao?.toLocaleString() }}
+                    <h3 class="font-semibold pr-2">Data de Inicio: </h3>{{ selectedActivity?.dataCriacao?.toLocaleString()
+                    }}
                 </h3>
                 <h3 class="flex">
-                    <h3 class="font-semibold pr-2">Data de Entrega: </h3>{{ selectedActivity?.dataEntrega?.toLocaleString() }}
+                    <h3 class="font-semibold pr-2">Data de Entrega: </h3>{{ selectedActivity?.dataEntrega?.toLocaleString()
+                    }}
                 </h3>
             </div>
 
@@ -373,10 +243,10 @@ export default {
                 <div v-for="studentAnswer in estudanteResposta" class="w-full">
                     <div class="border w-full border-l-4 border-l-green-500 p-4">
                         <div class="flex ">
-                            <router-link :to="'/instructor/'+studentAnswer.answer.id" class="flex flex-col items-center mr-2 rounded px-2 hover:bg-slate-200">
-                                <Icon  :color="`#${studentAnswer?.student?.cor ?? '000000'}`" 
-                                height="50"
-                                 width="50" icon="ph:user-circle-duotone" />
+                            <router-link :to="'/instructor/' + studentAnswer.answer.id"
+                                class="flex flex-col items-center mr-2 rounded px-2 hover:bg-slate-200">
+                                <Icon :color="`#${studentAnswer?.student?.cor ?? '000000'}`" height="50" width="50"
+                                    icon="ph:user-circle-duotone" />
                                 vizualizar
                             </router-link>
                             <div class="">
@@ -399,7 +269,7 @@ export default {
                         <div class="flex">
                             <div class="pl-1 ml-4 mr-6">
                                 <Icon :color="`#${student?.cor ?? '000000'}`" height="50" width="50"
-                                icon="ph:user-circle-duotone" />
+                                    icon="ph:user-circle-duotone" />
                             </div>
                             <div class="">
                                 <p class="">

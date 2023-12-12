@@ -13,7 +13,7 @@ type arrayBool = { value: Boolean }
 
 export default {
 
-    
+
     props: {
         // answer: {} as () => Answer,
         activity: {
@@ -60,20 +60,21 @@ export default {
         returnInfo() {
             if (this.$refs.customTable) {
                 let res = this.$refs.customTable.returnInfo().contents
-                if (this.answer.id){
-                    console.log("Tem");
+                console.log(res);
+                let newAnswer = {
+                    idAtividade: this.activity.id,
+                    compartilhado: res[2].value,
+                    github: res[3].value,
+                    comentario: res[4].value,
+                } as Answer
+                console.log(newAnswer);
+                if (newAnswer.comentario?.length?? 0 < 5){
+                    this.edit = true
+                    alert("Coloque um caminho no compartilhado")
                 }
-                else{
-                    console.log("Não");
-                    DANDO ERRO AKIO TERMINAR;;;;;;;;;;
-                    let newAnswer = {
-                        idAtividade: this.activity.id,
-                        idUsuario: this.user.id,
-                        comentario: 
-                    } as Answer
-                    console.log(newAnswer);
-                    
-                    // GaeAPI.post('/respostas', newAnswer ,{
+                else if (this.answer.id) {
+                    alert("essa funcionalidade ainda não foi aplicada na API")
+                    // GaeAPI.put(`/respostas?id=${this.answer.id}`, newAnswer ,{
                     //     headers:{
                     //         Authorization: this.$cookies.get("USER_TOKEN")
                     //     }
@@ -84,6 +85,21 @@ export default {
                     // .catch(error=>{
                     //     alert(error.response.data)
                     // })
+                }
+                else {
+                    console.log("nova");
+
+                    GaeAPI.post('/respostas', newAnswer ,{
+                        headers:{
+                            Authorization: this.$cookies.get("USER_TOKEN")
+                        }
+                    })
+                    .then((res)=>{
+                        alert("Atividade enviada com sucesso!")
+                    })
+                    .catch(error=>{
+                        alert(error.response.data)
+                    })
                 }
                 // console.log("--");
                 // console.log(this._info);
@@ -106,6 +122,18 @@ export default {
                 // console.log(this.edit);
                 this.$refs.customTable.triggerCancelChanges()
             }
+        },
+        dateToDatabaseDate(originalDate: Date) {
+            // Extract the components of the date
+            const year = originalDate.getFullYear();
+            const month = (originalDate.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+            const day = originalDate.getDate().toString().padStart(2, '0');
+            const hours = originalDate.getHours().toString().padStart(2, '0');
+            const minutes = originalDate.getMinutes().toString().padStart(2, '0');
+            const seconds = originalDate.getSeconds().toString().padStart(2, '0');
+
+            // Create the desired format
+            return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
         }
     },
     watch: {
@@ -117,26 +145,26 @@ export default {
                 }
             })
                 .then(res => {
-                    
-                    
+
+
                     this.answer = res.data
                     // console.log(res.data);
 
                 })
-                .catch(error =>{
-                    if (error.response.status){
+                .catch(error => {
+                    if (error.response.status) {
                         this.answer = {
                             idAtividade: this.activity.id,
                             idUsuario: this.user.id,
 
                         } as Answer
                     }
-                    
+
                 })
         },
         answer(answer: Answer) {
             console.log(answer);
-            
+
             let formatNum = (num: number) => {
                 return num.toString().length == 1 ? "0" + num.toString() : num.toString()
             }
@@ -193,9 +221,9 @@ export default {
                 contents:
                     [
                         { value: date?.days + " dias " + date?.hours + " Horas " + date?.minutes + " Minutos" },
-                        { value: answer?.dataAlteracao? (new Date(answer?.dataAlteracao)).toLocaleString() : "-" },
-                        { value: answer?.compartilhado ?? "-", function: () => { this.copy(); }, icon: "copy", editable: true },
-                        { value: answer?.github ?? "-", editable: true },
+                        { value: answer?.dataAlteracao ? (new Date(answer?.dataAlteracao)).toLocaleString() : "Ainda não respondido" },
+                        { value: answer?.compartilhado ?? "", function: () => { this.copy(); }, icon: "copy", editable: true },
+                        { value: answer?.github ?? "", editable: true },
                         { value: answer?.comentario ?? "", editable: true }
                     ]
             } as Table
@@ -229,7 +257,8 @@ export default {
     <div class=" w-full flex items-center justify-between">
 
         <h1 class="text-xl font-semibold">Sua Resposta</h1>
-        <button v-if="(new Date(this.activity.dataEntrega)) > (new Date)" :onclick="() => { edit = !edit }" class="bg-blue-400 p-1 rounded-md w-14"> Editar</button>
+        <button v-if="(new Date(this.activity.dataEntrega)) > (new Date)" :onclick="() => { edit = !edit }"
+            class="bg-blue-400 p-1 rounded-md w-14"> Editar</button>
     </div>
 
     <CustomTable @return-info="returnInfo" @cancel-changes="cancelChanges" :info='this.info' :edit="edit"

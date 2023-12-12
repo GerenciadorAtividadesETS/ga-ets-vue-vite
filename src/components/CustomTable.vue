@@ -25,6 +25,7 @@ export default {
     watch:{
         info(){
             this._info = this.info
+            this.back = cloneDeep(this.info)
         }
     },
     emits: ['return-info', 'cancel-changes'],

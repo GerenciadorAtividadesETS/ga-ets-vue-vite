@@ -5,6 +5,7 @@ import GaeAPI from '../apis/gaeAPI'
 
 
 var isLoggedMixin = {
+   
     methods: {
       checkIfLogged(){
           var vm = this;
