@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 /* import specific icons */
 import { faUserSecret, faCircleQuestion, faCopy } from '@fortawesome/free-solid-svg-icons'
 
+
 import VueCookies from 'vue-cookies'
 
 library.add(faUserSecret)

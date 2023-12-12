@@ -34,7 +34,7 @@ export default {
     <TheHeader ></TheHeader>
     <div class="flex justify-center flex-1 ">
       <!-- <button :onclick="login">login</button> -->
-      <router-view :user="this.user"></router-view>
+      <router-view ></router-view>
     </div>
     <!-- <HelloWorld msg="Vite + Vue" /> -->
   </div>

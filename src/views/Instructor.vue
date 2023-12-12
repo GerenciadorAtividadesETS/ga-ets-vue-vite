@@ -1,8 +1,9 @@
 <script lang="ts">
 import GaeAPI from '../apis/gaeAPI'
-import { Activity, Answer, Subject, User } from '../components/type'
+import { Activity, Answer, Field, Subject, User } from '../components/type'
 import { Icon } from "@iconify/vue"
-
+import Dialog from 'primevue/dialog';
+import FormGenerator from '../components/FormGenerator.vue'
 export default {
     data() {
         var selectedActivity = {} as Activity
@@ -21,10 +22,37 @@ export default {
             answers: [] as Answer[],
             hideDetails: true,
             turmas: [] as Number[],
-            professores: [] as User[]
+            professores: [] as User[],
+            addActivityModal: false,
+            fields: [
+                {
+                    name: "EDV",
+                    placeholder: "Insira seu edv",
+                    required: true,
+                    type: "number",
+                    value: "",
+                    max: 8,
+                },
+                {
+                    name: "Senha",
+                    placeholder: "Insira sua senha",
+                    required: true,
+                    type: "password",
+                    value: "",
+
+                },
+            ] as Field[]
         }
     },
     methods: {
+        getFieldValueByName(name: string) {
+            for (let index = 0; index < this.fields.length; index++) {
+                const element = this.fields[index];
+                if (element.name == name) {
+                    return element.value
+                }
+            }
+        },
         alterarMaterias(turma: number) {
             /*
             api pegando e setando as infos
@@ -32,7 +60,7 @@ export default {
             GaeAPI.get('/materias', { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
                 .then(res => this.materias = res.data.content)
             GaeAPI.get(`/turmas/${turma}`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
-                .then(res =>{ this.students = res.data.content;})
+                .then(res => { this.students = res.data.content; })
         },
         alterarAtividades(materia: Subject) {
             /*
@@ -86,7 +114,7 @@ export default {
         }
     },
     components: {
-        Icon
+        Icon, Dialog, FormGenerator
     },
     computed: {
         estudanteResposta(): { student: User, answer: Answer }[] {
@@ -129,16 +157,38 @@ export default {
 
 
         },
+        closeCallback() {
+
+        }
     },
     created() {
         GaeAPI.get("/turmas", { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
-            .then(res => this.turmas = res.data.content.map(item => item.turma))
+            .then(res => this.turmas = res.data.content
+                .map(item => item.turma)
+                .sort((a, b) => { return a - b })
+            )
     },
 }
 
 </script>
 
 <template>
+    <Dialog v-model:visible="addActivityModal" modal header="Header" :pt="{
+        root: { class: ' bg-white border rounded-lg' },
+        body: { class: ' bg-white rounded-none' },
+        footer:{ class: ' bg-white rounded-none' },
+        content: { class: ' bg-white rounded-none' },
+        header: { class: '' },
+        mask: {
+            style: 'backdrop-filter: blur(2px)'
+        }
+    }">
+        <!-- #container="{ this.closeCallback }" -->
+        <div class="flex bg-white rounded-none w-full h-64 px-8 py-5 gap-4 ">
+            <FormGenerator :fields="fields"></FormGenerator>
+        </div>
+    </Dialog>
+    
     <div class="content-end flex flex-col justify-center w-[75rem] px-14">
         <h1 class="text-4xl mt-7 mb-12 font-semibold text-end">
             Área do Instutor
@@ -162,9 +212,13 @@ export default {
                         Materia
                     </h2>
 
-                    <button :style="{ backgroundColor: selectedClass == 0 ? 'rgb(74 222 128)' : '' }" :disabled="selectedClass == 0" class=" w-7 flex items-center justify-center bg-green-600 rounded-full">
-                        <div :style="{ backgroundColor: selectedClass == 0 ? 'rgb(170 240 240)' : '' }" class="absolute w-3 h-0.5 rounded-full bg-white"></div>
-                        <div :style="{ backgroundColor: selectedClass == 0 ? 'rgb(170 240 240)' : '' }" class="absolute h-3 w-0.5 rounded-full bg-white"></div>
+                    <button :style="{ backgroundColor: selectedClass == 0 ? 'rgb(74 222 128)' : '' }"
+                        :disabled="selectedClass == 0"
+                        class="ml-2 w-7 flex items-center justify-center bg-green-600 rounded-full">
+                        <div :style="{ backgroundColor: selectedClass == 0 ? 'rgb(170 240 240)' : '' }"
+                            class="absolute w-3 h-0.5 rounded-full bg-white"></div>
+                        <div :style="{ backgroundColor: selectedClass == 0 ? 'rgb(170 240 240)' : '' }"
+                            class="absolute h-3 w-0.5 rounded-full bg-white"></div>
                     </button>
                 </div>
                 <select :disabled="selectedClass == 0"
@@ -176,9 +230,21 @@ export default {
             </div>
             <div class="flex flex-row items-center gap-2 sm:flex-col sm:items-start"
                 :style="{ color: selectedSubject.id == null ? 'gray' : 'black' }">
-                <h2>
-                    Atividade
-                </h2>
+                <div class="flex justify-between w-full">
+                    <h2>
+                        Atividade
+                    </h2>
+
+                    <button @click="() => addActivityModal = true"
+                        :style="{ backgroundColor: selectedSubject.id == null ? 'rgb(74 222 128)' : '' }"
+                        :disabled="selectedSubject.id == null"
+                        class="ml-2 w-7 flex items-center justify-center bg-green-600 rounded-full">
+                        <div :style="{ backgroundColor: selectedSubject.id == null ? 'rgb(170 240 240)' : '' }"
+                            class="absolute w-3 h-0.5 rounded-full bg-white"></div>
+                        <div :style="{ backgroundColor: selectedSubject.id == null ? 'rgb(170 240 240)' : '' }"
+                            class="absolute h-3 w-0.5 rounded-full bg-white"></div>
+                    </button>
+                </div>
                 <select :disabled="selectedSubject.id == null ? true : false"
                     class="max-w-[10rem] min-w-[10rem] w-full border p-2 rounded focus:outline-none"
                     v-model="selectedActivity">
