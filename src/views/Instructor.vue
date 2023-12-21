@@ -4,6 +4,9 @@ import { Activity, Answer, Field, Subject, User } from '../components/type'
 import { Icon } from "@iconify/vue"
 import Dialog from 'primevue/dialog';
 import FormGenerator from '../components/FormGenerator.vue'
+import Dropdown from 'primevue/dropdown';
+import ColorPicker from 'primevue/colorpicker';
+
 export default {
     data() {
         var selectedActivity = {} as Activity
@@ -24,23 +27,36 @@ export default {
             turmas: [] as Number[],
             professores: [] as User[],
             addActivityModal: false,
+            addSubjectModal: false,
+            val: 0,
+            subjectNewColor: 'ff0000',
             fields: [
                 {
-                    name: "EDV",
-                    placeholder: "Insira seu edv",
+                    name: "titulo",
                     required: true,
-                    type: "number",
-                    value: "",
-                    max: 8,
+                    value: ""
                 },
                 {
-                    name: "Senha",
-                    placeholder: "Insira sua senha",
+                    name: "descricao",
                     required: true,
-                    type: "password",
-                    value: "",
-
+                    value: ""
                 },
+                {
+                    name: "dataCriacao",
+                    required: true,
+                    type: "datetime-local",
+                },
+                {
+                    name: "dataEntrega",
+                    required: true,
+                    type: "datetime-local",
+                    specificValidator: (a) => {
+                        if (a) {
+                            console.log(a);
+
+                        }
+                    }
+                }
             ] as Field[]
         }
     },
@@ -71,7 +87,11 @@ export default {
                 return
             }
             GaeAPI.get(`/atividades/turmas/${this.selectedClass}`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
-                .then(res => this.atividades = res.data.content)
+                .then(res => this.atividades = res.data.content.filter(activity => activity.idMateria == materia.id)
+                )
+
+
+            // this.atividades = listaAuxiliar.filter(activity => activity.idMateria == materia.id)
 
 
         },
@@ -80,11 +100,11 @@ export default {
             api pegando e setando as infos
             */
             if (atividade.id == null) {
-                this.students = [] as User[]
+                this.answers = [] as Answer[]
                 return
             }
             // GaeAPI.get(`respostas/atividades/${this.selectedActivity.id}/turmas/${this.selectedClass}`,{headers:{Authorization:this.$cookies.get("USER_TOKEN")}})
-            GaeAPI.get(`respostas/atividades/${this.selectedActivity.id}/turmas/0`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
+            GaeAPI.get(`respostas/atividades/${this.selectedActivity.id}/turmas/${this.selectedClass}`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
                 .then(res => {
                     this.answers = res.data.content; console.log(res.data.content);
                 })
@@ -98,6 +118,36 @@ export default {
         isIdInList(estudante: User) {
             return this.listaIds.some((item: Answer) => item.idUsuario === estudante.id);
         },
+        createSubject() {
+            GaeAPI.post('/materias', {
+                nome: this.val,
+                cor: this.subjectNewColor
+            },
+                { headers: { Authorization: this.$cookies.get('USER_TOKEN') } })
+                .then(res => {
+                    this.addSubjectModal = false
+                    this.materias.push(res.data)
+                    this.selectedSubject = res.data
+                })
+        },
+        createActivity(){
+            GaeAPI.post('/atividades',{
+                "idMateria": this.selectedSubject.id,
+                "turma": this.selectedClass,
+                "titulo": this.getFieldValueByName('titulo'),
+                "descricao": this.getFieldValueByName('descricao'),
+                "dataEntrega": this.getFieldValueByName('dataEntrega')
+            },
+            { headers: { Authorization: this.$cookies.get('USER_TOKEN') } })
+            .then(res =>{
+                this.addActivityModal = false
+                alert("Atividade criada com sucesso!")
+                this.atividades.push(res.data)
+                this.selectedActivity = res.data
+            }
+
+            )
+        }
     },
     watch: {
         selectedClass(newC, oldC) {
@@ -107,14 +157,24 @@ export default {
         },
         selectedSubject(newS) {
             this.selectedActivity = {} as Activity
+            if (newS.code) {
+                this.selectedSubject = newS.code
+                return
+            }
             this.alterarAtividades(newS)
         },
         selectedActivity(newA) {
             this.alterarAlunosAtividades(newA)
+        },
+        val(v) {
+            console.log('.');
+
+            console.log(v)
+            v = v.code
         }
     },
     components: {
-        Icon, Dialog, FormGenerator
+        Icon, Dialog, FormGenerator, Dropdown, ColorPicker
     },
     computed: {
         estudanteResposta(): { student: User, answer: Answer }[] {
@@ -173,22 +233,175 @@ export default {
 </script>
 
 <template>
-    <Dialog v-model:visible="addActivityModal" modal header="Header" :pt="{
+    <Dialog v-model:visible="addActivityModal" modal header="Cadastrar Atividade" :pt="{
         root: { class: ' bg-white border rounded-lg' },
         body: { class: ' bg-white rounded-none' },
-        footer:{ class: ' bg-white rounded-none' },
+        footer: { class: ' bg-white rounded-none' },
         content: { class: ' bg-white rounded-none' },
-        header: { class: '' },
+        header: { class: 'ml-2' },
         mask: {
             style: 'backdrop-filter: blur(2px)'
         }
     }">
         <!-- #container="{ this.closeCallback }" -->
-        <div class="flex bg-white rounded-none w-full h-64 px-8 py-5 gap-4 ">
-            <FormGenerator :fields="fields"></FormGenerator>
+        <div class="flex flex-col bg-white rounded-none w-96  px-8 py-5 gap-4 ">
+            <div>
+                <h3>
+
+                    Turma
+                </h3>
+                <select class="max-w-[7rem] min-w-[7rem] w-full border p-1 rounded focus:outline-none"
+                    v-model="selectedClass">
+                    <option disabled :value="0">Selecione</option>
+                    <option v-for="i in turmas" :value="i">{{ i }}</option>
+                </select>
+            </div>
+            <div>
+                <div class="w-full flex">
+
+                    <h3>
+                        Materias
+                    </h3>
+                    <button :onclick="() => addSubjectModal = true"
+                        :style="{ backgroundColor: selectedClass == 0 ? 'rgb(74 222 128)' : '' }"
+                        :disabled="selectedClass == 0"
+                        class="ml-2 w-6 h-6 flex items-center justify-center bg-green-600 rounded-full">
+                        <div :style="{ backgroundColor: selectedClass == 0 ? 'rgb(170 240 240)' : '' }"
+                            class="absolute w-3 h-0.5 rounded-full bg-white"></div>
+                        <div :style="{ backgroundColor: selectedClass == 0 ? 'rgb(170 240 240)' : '' }"
+                            class="absolute h-3 w-0.5 rounded-full bg-white"></div>
+                    </button>
+                </div>
+                <select :disabled="selectedClass == 0"
+                    class="max-w-[10rem] min-w-[10rem]  w-full border p-1 rounded focus:outline-none"
+                    v-model="selectedSubject">
+                    <option disabled :value="{}">Selecione</option>
+                    <option v-for="materia in materias" :value="materia">{{ materia.nome }}</option>
+                </select>
+            </div>
+            <FormGenerator :action="createActivity" :fields="fields"></FormGenerator>
+            
         </div>
     </Dialog>
-    
+    <Dialog v-model:visible="addSubjectModal" modal header=" Cadastrar Materia" :pt="{
+        root: { class: ' bg-white border rounded-lg' },
+        body: { class: ' bg-white rounded-none' },
+        footer: { class: ' bg-white rounded-none' },
+        content: { class: ' bg-white rounded-none' },
+        header: { class: 'ml-2' },
+        mask: {
+            style: 'backdrop-filter: blur(2px)'
+        }
+    }">
+        <!-- #container="{ this.closeCallback }" -->
+        <div class="flex flex-col bg-white rounded-none w-full  items-center px-8 py-5 gap-4 ">
+            <div class="flex justify-between items-center gap-2 w-full">
+                <h2>
+                    Materia
+                </h2>
+                <!-- v-model="selectedSubject"  -->
+                <!-- :options="[
+                    {name: 'subject', code: {a:'subject'} },
+                    {name: 'subject1', code: 'subject1'},
+                    {name: 'subject2', code: 'subject2'},
+                    ]"  -->
+                <Dropdown editable v-model="val"
+                    :options="materias.map(subject => { return { name: subject.nome, code: subject.id } })" optionLabel="name"
+                    placeholder="Select a City" class="w-full md:w-14rem" :pt="{
+                        root: { class: 'w-full md:w-14rem border rounded pr-3' },
+                        item: ({ props, state, context }) => ({
+                            class: context.focused || context.selected ? 'bg-gray-300 border border-black p-1' : 'bg-white'
+                        })
+                    }" />
+
+
+                <!-- class: context.selected ? 'bg-gray-100' : context.focused ? 'bg-blue-100' : 'bg-white' -->
+                <!-- <select :disabled="selectedClass == 0"
+                    class="max-w-[10rem] min-w-[10rem] h-min  w-full border p-2 rounded focus:outline-none"
+                    v-model="selectedSubject">
+                    <option disabled :value="{}">Selecione</option>
+                    <option v-for="materia in materias" :value="materia">{{ materia.nome }}</option>
+                </select> -->
+            </div>
+            <div class="flex justify-between items-center gap-2 w-full">
+                <h2>
+                    Cor
+                </h2>
+                <!-- v-model="selectedSubject"  -->
+                <!-- :options="[
+                    {name: 'subject', code: {a:'subject'} },
+                    {name: 'subject1', code: 'subject1'},
+                    {name: 'subject2', code: 'subject2'},
+                    ]"  -->
+                    <div>
+
+                    
+                    <div class="mt-1 absolute select-none text-gray-400">
+                        <ColorPicker class="" v-model="subjectNewColor" inputId="cp-hex" format="hex" :pt="{
+                            root: ({ props }) => ({
+                                class: [
+                                    'inline-block pl-2',
+                                    {
+                                        'opacity-60 select-none cursor-default': props.disabled
+                                    }
+                                ]
+                            }),
+                            input: {
+                                class: [
+                                    'm-0',
+                                    'font-sans text-base text-gray-600 bg-white dark:bg-gray-900 p-3 border border-gray-300 dark:border-blue-900/40 transition-colors duration-200 rounded-lg cursor-pointer',
+                                    'hover:border-blue-500 focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)] dark:focus:shadow-[0_0_0_0.2rem_rgba(147,197,253,0.5)]',
+                                    'w-8 h-8'
+                                ]
+                            },
+                            panel: ({ props }) => ({
+                                class: [
+                                    'shadow-md',
+                                    'bg-gray-800 border-gray-900',
+                                    {
+                                        'relative h-48 w-52': props.inline,
+                                        'absolute h-48 w-52': !props.inline
+                                    }
+                                ]
+                            }),
+                            selector: 'absolute h-44 w-40 top-2 left-2',
+                            color: {
+                                class: 'h-44 w-40',
+                                style: 'background: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0) 100%), linear-gradient(to right, #fff 0%, rgb(255 255 255 / 0) 100%)'
+                            },
+                            colorhandle: {
+                                class: ['rounded-full border border-solid cursor-pointer h-3 w-3 absolute  opacity-85', 'border-white']
+                            },
+                            hue: {
+                                class: ['h-44 w-6 absolute top-2 left-44 opacity-85'],
+                                style: 'background: linear-gradient(0deg, red 0, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, red)'
+                            },
+                            huehandle: 'border-solid border-2 cursor-pointer h-2 w-8 left-0 -ml-1 -mt-1 opacity-85 absolute',
+                            transition: {
+                                overlay: {
+                                    enterFromClass: 'opacity-0 scale-75',
+                                    enterActiveClass: 'transition-transform transition-opacity duration-150 ease-in',
+                                    leaveActiveClass: 'transition-opacity duration-150 ease-linear',
+                                    leaveToClass: 'opacity-0'
+                                }
+                            }.overlay
+                        }" />
+
+                        #
+
+                    </div>
+                    <!-- <CustomInput :field="{value:color}"></CustomInput> -->
+                    <input 
+                        class="border flex w-full p-2 h-10 pl-14 py-2 rounded-md focus:outline-none focus:border-black"
+                        type="text" v-model="subjectNewColor">
+                    </div>
+            </div>
+            <button :disabled='!(typeof (val) != typeof ({})) || !val' :onclick="createSubject"
+                class="p-1 rounded bg-green-500 text-white w-min"
+                :style="{ backgroundColor: (!(typeof (val) != typeof ({})) || !val) ? 'rgb(134, 239, 172)' : '' }">Cadastrar</button>
+        </div>
+    </Dialog>
+
     <div class="content-end flex flex-col justify-center w-[75rem] px-14">
         <h1 class="text-4xl mt-7 mb-12 font-semibold text-end">
             Área do Instutor
@@ -212,14 +425,7 @@ export default {
                         Materia
                     </h2>
 
-                    <button :style="{ backgroundColor: selectedClass == 0 ? 'rgb(74 222 128)' : '' }"
-                        :disabled="selectedClass == 0"
-                        class="ml-2 w-7 flex items-center justify-center bg-green-600 rounded-full">
-                        <div :style="{ backgroundColor: selectedClass == 0 ? 'rgb(170 240 240)' : '' }"
-                            class="absolute w-3 h-0.5 rounded-full bg-white"></div>
-                        <div :style="{ backgroundColor: selectedClass == 0 ? 'rgb(170 240 240)' : '' }"
-                            class="absolute h-3 w-0.5 rounded-full bg-white"></div>
-                    </button>
+
                 </div>
                 <select :disabled="selectedClass == 0"
                     class="max-w-[10rem] min-w-[10rem]  w-full border p-2 rounded focus:outline-none"
@@ -235,13 +441,22 @@ export default {
                         Atividade
                     </h2>
 
-                    <button @click="() => addActivityModal = true"
+                    <!-- <button @click="() => addActivityModal = true"
                         :style="{ backgroundColor: selectedSubject.id == null ? 'rgb(74 222 128)' : '' }"
                         :disabled="selectedSubject.id == null"
                         class="ml-2 w-7 flex items-center justify-center bg-green-600 rounded-full">
                         <div :style="{ backgroundColor: selectedSubject.id == null ? 'rgb(170 240 240)' : '' }"
                             class="absolute w-3 h-0.5 rounded-full bg-white"></div>
                         <div :style="{ backgroundColor: selectedSubject.id == null ? 'rgb(170 240 240)' : '' }"
+                            class="absolute h-3 w-0.5 rounded-full bg-white"></div>
+                    </button> -->
+                    <button @click="() => addActivityModal = true"
+                        :style="{ backgroundColor: selectedClass == 0 ? 'rgb(74 222 128)' : '' }"
+                        :disabled="selectedClass == 0"
+                        class="ml-2 w-7 flex items-center justify-center bg-green-600 rounded-full">
+                        <div :style="{ backgroundColor: selectedClass == 0 ? 'rgb(170 240 240)' : '' }"
+                            class="absolute w-3 h-0.5 rounded-full bg-white"></div>
+                        <div :style="{ backgroundColor: selectedClass == 0 ? 'rgb(170 240 240)' : '' }"
                             class="absolute h-3 w-0.5 rounded-full bg-white"></div>
                     </button>
                 </div>
@@ -300,6 +515,7 @@ export default {
                     <h3 class="font-semibold pr-2">Data de Entrega: </h3>{{ selectedActivity?.dataEntrega?.toLocaleString()
                     }}
                 </h3>
+                <button class="bg-red-500 p-1 rounded text-white">Excluir</button>
             </div>
 
         </div>

@@ -1,5 +1,4 @@
 <script lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
 import TheHeader from './components/TheHeader.vue';
 // import ChildComp from './ChildComp.vue'
 import { User } from './components/type'
@@ -20,7 +19,6 @@ export default {
     }
   },
   components: {
-    HelloWorld,
     TheHeader
   },
   methods: {
@@ -36,7 +34,6 @@ export default {
       <!-- <button :onclick="login">login</button> -->
       <router-view ></router-view>
     </div>
-    <!-- <HelloWorld msg="Vite + Vue" /> -->
   </div>
 </template>
 

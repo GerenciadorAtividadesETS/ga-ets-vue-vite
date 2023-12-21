@@ -24,6 +24,9 @@ export default {
             // type: {} as ()=> User,
             required: true
         },
+        editable: {
+            type: Boolean
+        }
     },
     data() {
         return {
@@ -32,6 +35,22 @@ export default {
             edit: false,
             answer: {} as Answer,
             copy: () => { },
+        }
+    },
+    computed:{
+        deadline(){
+            console.log("1");
+            
+            if ((new Date(this.activity.dataEntrega)) > (new Date)){
+                return false
+            }
+            console.log("2");
+            if ((new Date(this.activity.dataCriacao)) < (new Date)){
+                return true
+            }
+            console.log("3");
+            
+            return false
         }
     },
     components: {
@@ -67,12 +86,16 @@ export default {
                     github: res[3].value,
                     comentario: res[4].value,
                 } as Answer
-                console.log(newAnswer);
-                if (newAnswer.comentario?.length?? 0 < 5){
-                    this.edit = true
-                    alert("Coloque um caminho no compartilhado")
+                if (!newAnswer.compartilhado){
+                    return
                 }
-                else if (this.answer.id) {
+                console.log(newAnswer);
+                // if (newAnswer.comentario?.length?? 0 < 5){
+                //     this.edit = true
+                //     alert("Coloque um caminho no compartilhado")
+                // }
+                // else
+                 if (this.answer.id) {
                     alert("essa funcionalidade ainda não foi aplicada na API")
                     // GaeAPI.put(`/respostas?id=${this.answer.id}`, newAnswer ,{
                     //     headers:{
@@ -88,7 +111,19 @@ export default {
                 }
                 else {
                     console.log("nova");
-
+                    let digitalIndex = newAnswer.compartilhado.indexOf("DIGITAL_SOLUTIONS_")
+                    let nextSlash = 0
+                    if (digitalIndex != -1){
+                        nextSlash = newAnswer.compartilhado.indexOf("\\", digitalIndex) + 1
+                    }
+                    if (newAnswer.compartilhado.slice(0,1) == '\\'){
+                        nextSlash = 1
+                    }
+                    
+                    // if (nextSlash != 0){
+                    newAnswer.compartilhado = newAnswer.compartilhado.slice(nextSlash)
+                    // }
+                    this.info.contents[2].value = newAnswer.compartilhado
                     GaeAPI.post('/respostas', newAnswer ,{
                         headers:{
                             Authorization: this.$cookies.get("USER_TOKEN")
@@ -257,7 +292,7 @@ export default {
     <div class=" w-full flex items-center justify-between">
 
         <h1 class="text-xl font-semibold">Sua Resposta</h1>
-        <button v-if="(new Date(this.activity.dataEntrega)) > (new Date)" :onclick="() => { edit = !edit }"
+        <button v-if="(new Date(this.activity.dataEntrega)) > (new Date) && !this.editable" :onclick="() => { edit = !edit }"
             class="bg-blue-400 p-1 rounded-md w-14"> Editar</button>
     </div>
 
