@@ -9,7 +9,12 @@ export default {
     setup(props, ctx) {
         let student = {} as User
         let answer = {} as Answer
+        const route = useRoute()
+        const studentEDV = route.params.studentEDV
+        const activityId = route.params.activityId
         return {
+            studentEDV,
+            activityId
         }
     },
     data() {
@@ -22,15 +27,16 @@ export default {
     },
     components: { CustomTable, AnswerCard },
     created() {
-        GaeAPI.get(`/respostas?atividade=${this.route.params.answerId}`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
-            .then((res) => {
-                this.answer = res.data; console.log("TESTE");
-                GaeAPI.get('/atividades/' + res.data.idAtividade, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
-                    .then((resA) => this.activity = resA.data);
-            });
+        GaeAPI.get(`/usuarios/${this.studentEDV}`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
+            .then((res) => { this.student = res.data });
+        // GaeAPI.get(`/respostas?atividade=${this.activityId}&usuario=${this.studentEDV}`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
+        //     .then((res) => {
+        //         this.answer = res.data; console.log("TESTE");
+        GaeAPI.get('/atividades/' + this.activityId, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
+            .then((resA) => this.activity = resA.data);
+        // });
         // GaeAPI.get('/usuarios?usuario=' + this.answer.idUsuario).then((res) => this.student = res.data);
-        GaeAPI.get('/usuarios', { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
-            .then((res) => this.student = res.data);
+
 
 
 
@@ -62,19 +68,27 @@ export default {
             <h1 class="text-xl font-semibold"> Atividade</h1>
             <h3 class=""> {{ activity.descricao }}</h3>
             <div v-if="student">
-                <div class="border-2 rounded p-2" :style="{ borderColor: '#' + student.cor}">
-                    <h3 class="flex"><h3 class="font-semibold">Nome:&nbsp; </h3><h3>{{student.nome}}</h3></h3>
-                    <h3 class="flex"><h3 class="font-semibold">Turma:&nbsp; </h3><h3>{{student.turma}}</h3></h3>
-                    <h3 class="flex"><h3 class="font-semibold">EDV:&nbsp; </h3><h3>{{student.edv}}</h3></h3>
+                <div class="border-2 rounded p-2" :style="{ borderColor: '#' + student.cor }">
+                    <h3 class="flex">
+                        <h3 class="font-semibold">Nome:&nbsp; </h3>
+                        <h3>{{ student.nome }}</h3>
+                    </h3>
+                    <h3 class="flex">
+                        <h3 class="font-semibold">Turma:&nbsp; </h3>
+                        <h3>{{ student.turma }}</h3>
+                    </h3>
+                    <h3 class="flex">
+                        <h3 class="font-semibold">EDV:&nbsp; </h3>
+                        <h3>{{ student.edv }}</h3>
+                    </h3>
                 </div>
             </div>
             <AnswerCard :editable="true" :activity="activity" :user="student" />
 
-            <!-- <AnswerCard :answer="answer" :.dataEntrega="activity?.dataEntrega" :edit="edit"/> -->
+        <!-- <AnswerCard :answer="answer" :.dataEntrega="activity?.dataEntrega" :edit="edit"/> -->
 
-            <!-- <div class="h-0.5 md:block hidden w-36 rounded-full bg-gray-300"></div> -->
+        <!-- <div class="h-0.5 md:block hidden w-36 rounded-full bg-gray-300"></div> -->
 
-            <!-- </div> -->
-        </div>
+        <!-- </div> -->
     </div>
-</template>
+</div></template>

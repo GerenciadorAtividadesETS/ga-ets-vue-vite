@@ -13,7 +13,7 @@ export default {
       nome: "default",
       turma: 0
     }
-    GaeAPI.get(`/usuarios/${professor_id}`).then((res) => professor = res.data)
+    GaeAPI.get(`/usuarios/00000000`).then((res) => professor = res.data)
     return {
       professor
     }

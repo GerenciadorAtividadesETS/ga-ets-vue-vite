@@ -73,10 +73,12 @@ export default {
             /*
             api pegando e setando as infos
             */
-            GaeAPI.get('/materias', { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
+            GaeAPI.get(`/materias/turmas/${turma}`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
                 .then(res => this.materias = res.data.content)
             GaeAPI.get(`/turmas/${turma}`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
-                .then(res => { this.students = res.data.content; })
+                .then(res => { this.students = res.data.content; console.log("AAAAAAAAASDCZX");
+                 console.log(res.data.content);
+                 })
         },
         alterarAtividades(materia: Subject) {
             /*
@@ -103,8 +105,8 @@ export default {
                 this.answers = [] as Answer[]
                 return
             }
-            // GaeAPI.get(`respostas/atividades/${this.selectedActivity.id}/turmas/${this.selectedClass}`,{headers:{Authorization:this.$cookies.get("USER_TOKEN")}})
-            GaeAPI.get(`respostas/atividades/${this.selectedActivity.id}/turmas/${this.selectedClass}`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
+            // GaeAPI.get(`respostas/atividades/${this.selectedActivity.id}`,{headers:{Authorization:this.$cookies.get("USER_TOKEN")}})
+            GaeAPI.get(`respostas/atividades/${this.selectedActivity.id}`, { headers: { Authorization: this.$cookies.get("USER_TOKEN") } })
                 .then(res => {
                     this.answers = res.data.content; console.log(res.data.content);
                 })
@@ -525,7 +527,7 @@ export default {
                 <div v-for="studentAnswer in estudanteResposta" class="w-full">
                     <div class="border w-full border-l-4 border-l-green-500 p-4">
                         <div class="flex ">
-                            <router-link :to="'/instructor/' + studentAnswer.answer.id"
+                            <router-link :to="'/instructor/' + selectedActivity.id + '/' + studentAnswer.student.edv"
                                 class="flex flex-col items-center mr-2 rounded px-2 hover:bg-slate-200">
                                 <Icon :color="`#${studentAnswer?.student?.cor ?? '000000'}`" height="50" width="50"
                                     icon="ph:user-circle-duotone" />

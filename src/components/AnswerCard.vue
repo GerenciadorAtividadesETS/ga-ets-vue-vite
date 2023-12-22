@@ -174,7 +174,7 @@ export default {
     watch: {
         activity(activity: Activity) {
             // GaeAPI.get(`/respostas?atividade=${activity.id}`)
-            GaeAPI.get(`/respostas?atividade=${activity.id}`, {
+            GaeAPI.get(`/respostas?atividade=${activity.id}&usuario=${this.user.edv}`, {
                 headers: {
                     Authorization: this.$cookies.get("USER_TOKEN")
                 }
